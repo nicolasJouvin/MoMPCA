@@ -21,7 +21,7 @@ simulate_BBC = function(N, L,  theta_true, epsilon = 0, lambda=1){
   data("BBCmsg")
   Q = 6
   K = 4
-  if (length(L) = 1) L <- rep(L, N)
+  if (length(L) == 1) L <- rep(L, N)
 
   Pi = lambda^(Q - 0:(Q - 1))
   Pi = Pi / sum(Pi)
