@@ -1,8 +1,16 @@
+## TODO add NAMESPACE checks to see if packages are installed
+
+
 ######################
 # Benchmarks
 benchmark.htsclust = function(dtm.full, Q, ...){
   #' Clustering of count data via the Poisson mixture model of Rau et. al.
   #' @param ... : params to pass onto the PoisMixClus function of the HTSCluster package
+
+  if (!requireNamespace("HTSCluster", quietly = T)) {
+    stop('Package HTSCluster needed for this initialization function to work. Please install it.',
+         call. = FALSE)
+  }
 
   V = dim(dtm.full)[2]
   conds = 1:V
@@ -10,11 +18,19 @@ benchmark.htsclust = function(dtm.full, Q, ...){
   run <- HTSCluster::PoisMixClus(as.matrix(dtm.full), g = Q , conds = conds, norm = norm, alg.type = 'CEM', ...)
 
   return(run$labels)
+
+
 }
 
 benchmark.nmf = function(dtm.full, Q, ...){
+
+  if (!requireNamespace("NMF", quietly = TRUE)) {
+    stop('Package NMF needed for this initialization function to work. Please install it.',
+         call. = FALSE)
+  }
+
   Wtilde = as.matrix(dtm.full)
-  dtm.tfidf.normalized =  suppressWarnings(tm::as.DocumentTermMatrix(Wtilde, weighting = weightTfIdf))
+  dtm.tfidf.normalized =  suppressWarnings(tm::as.DocumentTermMatrix(Wtilde, weighting = tm::weightTfIdf))
   stopifnot(sum(is.na(dtm.tfidf.normalized$v)) == 0)
   #Sanity check : remove words that never appear in the corpus
   voc.zero =  which(slam::col_sums(dtm.tfidf.normalized) == 0)
@@ -31,6 +47,7 @@ benchmark.nmf = function(dtm.full, Q, ...){
   Y.est.nmf = apply(H, 2 , which.max)
 
   return(Y.est.nmf)
+
 }
 
 
@@ -79,12 +96,23 @@ benchmark.kmeans_dtm = function(dtm.full, Q, ...){
 benchmark.multmix = function(dtm.full, Q, nruns) {
   #' Clustering with the mixture of multinomials models
 
+  if (!requireNamespace("mixtools", quietly = T)) {
+    stop('Package mixmult needed for this initialization function to work. Please install it.',
+         call. = FALSE)
+  }
+
   X = as.matrix(DTMtoSparse(dtm.full))
 
   results = list()
-  results <- foreach(i = 1:nruns, .inorder = F) %dopar% {
-    invisible(capture.output( res <- mixtools::multmixEM( X, k = Q, verb = F)))
-    return(res)
+
+  if (requireNamespace("foreach", quietly = TRUE)) {
+    results <- foreach(i = 1:nruns, .inorder = F) %dopar% {
+      invisible(capture.output( res <- mixtools::multmixEM( X, k = Q, verb = F)))
+      return(res)
+    }
+  } else {
+    for (i in 1:nruns)
+      invisible(capture.output( res[[i]] <- mixtools::multmixEM( X, k = Q, verb = F)))
   }
 
   best_res = unlist(sapply(1:nruns, function(i) results[[i]]$loglik))
@@ -92,48 +120,73 @@ benchmark.multmix = function(dtm.full, Q, nruns) {
   Y.est.mixtmult = apply(results[[best_res]]$posterior, 1, which.max)
 
   return(Y.est.mixtmult)
+
 }
 
 benchmark.nmfem = function(dtm, Q, K, nruns) {
   #' NMFEM algo from carel et. al.
   #' MLE in a frequentist setting of MMPCA model
 
+  if (!requireNamespace("nmfem", quietly = TRUE)) {
+    stop('Package nmfem needed for this initialization function to work. Please install it.',
+         call. = FALSE)
+  }
+
   X = as.data.frame(as.matrix(dtm))
 
   results = list()
-  results <- foreach(i = 1:nruns, .inorder = F) %dopar% {
-    invisible(capture.output(res <- tryCatch( expr = {
-      # try runnning nmfem
-      nmfem::nmfem_mult(X = X, H = K, K = Q)
-    },
-    error = function(e) {
-      # Return list with $llh = -in if it fails
-      list(llh = -Inf)
-    })
-    ))
-    return(res)
+
+  if (requireNamespace("foreach", quietly = TRUE)) {
+    results <- foreach(i = 1:nruns, .inorder = F) %dopar% {
+      invisible(capture.output(res <- tryCatch( expr = {
+        # try runnning nmfem
+        nmfem::nmfem_mult(X = X, H = K, K = Q)
+      },
+      error = function(e) {
+        # Return list with $llh = -in if it fails
+        list(llh = -Inf)
+      })
+      ))
+      return(res)
+    }
+  } else {
+    for (i in 1:nruns)
+      invisible(capture.output( res[[i]] <- nmfem::nmfem_mult(X = X, H = K, K = Q)))
   }
 
   best_res = unlist(sapply(1:nruns, function(i) results[[i]]$llh))
   best_res = which.max(best_res)
   Y.nmfem =  apply(results[[best_res]]$posterior, 1, which.max)
   return(Y.nmfem)
+
+
 }
 
-benchmark.mpca_gmm = function(dtm, Q, K , nruns=1, seed=NULL) {
+benchmark.gmm_lda = function(dtm, Q, K , nruns=1, seed=NULL) {
   #' Fit a Q-GMM in a K-LDA's latent space (Rmixmod)
 
+  if (!requireNamespace("Rmixmod", quietly = TRUE)) {
+    stop('Package Rmixmod needed for this initialization function to work. Please install it.',
+         call. = FALSE)
+  }
+
   baseline.lda = topicmodels::LDA(dtm,
-                                  control = list(estimate.alpha=FALSE, estimate.beta=TRUE, alpha = 1, verbose=0,
-                                                 nstart=4, var=list(iter.max=5000)),
+                                  control = list(estimate.alpha = FALSE,
+                                                 estimate.beta = TRUE,
+                                                 alpha = 1,
+                                                 verbose = 0,
+                                                 nstart = 4,
+                                                 var = list(iter.max = 5000)),
                                   k = K)
   strat = Rmixmod::mixmodStrategy(algo = 'CEM', nbTry = nruns)
   tryModels = Rmixmod::mixmodGaussianModel(family = 'all')
-  res = Rmixmod::mixmodCluster(data=as.data.frame(baseline.lda@gamma),
+  res = Rmixmod::mixmodCluster(data = as.data.frame(baseline.lda@gamma),
                                nbCluster = Q,
-                               models = tryModels, strategy = strat, criterion = 'ICL', seed = seed)
+                               models = tryModels,
+                               strategy = strat,
+                               criterion = 'ICL',
+                               seed = seed)
 
   Y.est.gmm_mpca = res@bestResult@partition
-
   return(Y.est.gmm_mpca)
 }
