@@ -60,7 +60,7 @@ simulate_BBC = function(N, L,  theta_true, epsilon = 0, lambda=1){
     doc[[d]] = paste(doc[[d]], collapse = " ")
   }
 
-  x = tm::Corpus(VectorSource(doc))
+  x = tm::Corpus(tm::VectorSource(doc))
 
   dtm.full <- tm::DocumentTermMatrix(x, control= list())
   voc.zero =  which(slam::col_sums(dtm.full) == 0)
@@ -70,5 +70,5 @@ simulate_BBC = function(N, L,  theta_true, epsilon = 0, lambda=1){
   #rearange columns in alphabetical order
   dtm.full = dtm.full[,sort(dtm.full$dimnames$Terms)]
 
-  return(list(dtm.full=dtm.full, Ytruth=Ytruth, theta.true = theta_true, Z=Z))
+  return(list(dtm.full=dtm.full, Ytruth=Ytruth, theta_true = theta_true, Z=Z))
 }
