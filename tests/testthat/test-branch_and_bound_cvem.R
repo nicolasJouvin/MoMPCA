@@ -18,7 +18,7 @@ Ytruth = simu$Ytruth
 res <- mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                    Yinit = Ytruth,
                    max.epochs = 1,
-                   keep = -1,
+                   keep = 1,
                    verbose = 0)
 
 test_that("check slots", code = {
@@ -47,17 +47,17 @@ test_that("Check wrong Yinit error message", code = {
   expect_error(mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                            Yinit = c(1),
                            max.epochs = 1,
-                           keep = -1,
+                           keep = 1,
                            verbose = 0))
   expect_error(mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                            Yinit = rep(1, N),
                            max.epochs = 1,
-                           keep = -1,
+                           keep = 1,
                            verbose = 0))
   expect_error(mmpca_clust(simu$dtm.full, Q = 6, K = 4,
               Yinit = 'wrong!',
               max.epochs = 1,
-              keep = -1,
+              keep = 1,
               verbose = 0))
 })
 
@@ -66,12 +66,12 @@ test_that("Check wrong Yinit error message", code = {
   expect_error(mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                            init.beta = init.beta,
                            max.epochs = 1,
-                           keep = -1,
+                           keep = 1,
                            verbose = 0))
   expect_error(mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                            init.beta = 'wrong !',
                            max.epochs = 1,
-                           keep = -1,
+                           keep = 1,
                            verbose = 0))
 })
 
