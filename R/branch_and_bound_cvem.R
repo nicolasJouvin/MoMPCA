@@ -1,3 +1,4 @@
+#' @export
 mmpca_clust <- function(dtm,
                         Q,
                         K,
