@@ -1,0 +1,78 @@
+---
+title: "MMPCA - A package for the clustering of count data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MMPCA}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+set.seed(42)
+```
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(MMPCA)
+library(aricode)
+```
+
+## Description
+
+MMPCA is a package to perform clustering of count data based on the *mixture of mutinomial PCA* model. It integrates a dimension reduction aspect by factorizing the multinomial parameters in a latent space, like *Latent Dirichlet Allocation* of Blei et. al.
+
+## Dataset
+
+The package contains attached data in **BBCmsg**. It consists in 4 text document already preprocessed with the **tm** package. It is mostly useful for the `simulate_BBC()` function.  
+```{r , eval=FALSE}
+data("BBCmsg")
+```
+
+## Mathematical background
+
+## Demonstration for document clustering
+
+Start by generating data from the MMPCA model with a particular $\theta^\star$ and $\beta^\star$. For more detail, check experimental section of the paper.
+```{r generate-data, echo=TRUE}
+data("BBCmsg")
+N = 50
+L = 200
+simu <- simulate_BBC(N, L, epsilon = 0, lambda = 1)
+Ytruth <- simu$Ytruth
+```
+
+Then perform cluster
+```{r mmpca}
+res <- mmpca_clust(simu$dtm.full, Q = 6, K = 4,
+                          Yinit = 'random',
+                          method = 'CVEM',
+                          max.epochs = 10,
+                          keep = 1,
+                          verbose = 1)
+```
+
+### Results analysis
+
+```{r clustering-results, echo=TRUE, include=TRUE}
+tab <- knitr::kable(table(res@clustering, Ytruth), format = 'markdown')
+print(tab)
+cat('Final ARI is ', aricode::ARI(res@clustering, Ytruth))
+```
+
+Other visualization are also accessible from the `plot` function. Which takes several arguments
+```{r plot-results-topics, fig.dim=c(5,5)}
+ggtopics <- plot(res, show = 'topics')
+print(ggtopics)
+```
+```{r plot-results-bound, fig.dim=c(5,5), echo=TRUE, include=TRUE}
+ggbound <- plot(res, type = 'bound')
+print(ggbound)
+```
+

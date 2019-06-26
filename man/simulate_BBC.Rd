@@ -7,7 +7,7 @@
   This function simulate from the MMPCA model with an additional noise
   parameter epsilon.}
 \usage{
-simulate_BBC(N, L, theta_true, epsilon = 0, lambda = 1)
+simulate_BBC(N, L, epsilon = 0, lambda = 1, theta_true = NULL)
 }
 \arguments{
 \item{N}{number of observations}
@@ -15,13 +15,13 @@ simulate_BBC(N, L, theta_true, epsilon = 0, lambda = 1)
 \item{L}{vector of length N containing the total count per observations.
 Duplicated if integer.}
 
-\item{theta_true}{The true parameter theta for the simulation.}
-
 \item{epsilon}{The noise level in the latent space. Quantify how far the
 distribution is from theta_true}
 
 \item{lambda}{A parameter quantifying the class proportion. lambda=1 means
 balanced cluster sizes, lower means that the first cluster are bigger.}
+
+\item{theta_true}{The true parameter theta for the simulation.}
 }
 \description{
 simulate_BBC
