@@ -6,12 +6,13 @@ mmpca_clust <- function(dtm,
                         Yinit = 'random',
                         method = 'CVEM',
                         init.beta = 'lda',
-                        keep = -1L,
+                        keep = 1L,
                         max.epochs = 100L,
                         verbose = 1L) {
 
   if (as.integer(K) != K || as.integer(K) < 2) stop("'K' needs to be an integer of at least 2")
   if (as.integer(Q) != Q || as.integer(Q) < 2) stop("'Q' needs to be an integer of at least 2")
+  if (as.integer(keep) != keep || keep < 0) stop("'keep' needs to be an non-negative integer")
 
   mycall = match.call()
   if (is.null(model)) {
@@ -162,6 +163,7 @@ mmpca_clust <- function(dtm,
 
     # optimisation of Y : greedy
     Ycurrent <- Y
+    check_bound = current_bound
     for (d in 1:N) {
 
       ## stock bound every keep iterations
@@ -236,16 +238,17 @@ mmpca_clust <- function(dtm,
           }
         }
       }else{
-        if (verbose > 0) cat('\n Can\'t swap doc ', d, ' !\n')
+        if (verbose > 0) cat('\n Can\'t swap observation ', d, ' !\n')
       }
 
       ite_cpt = ite_cpt + 1
-
     }
 
+
     #break of outer for loop (of the B&B)
-    if (identical(Ycurrent, Y))
-      break
+    if (identical(Ycurrent, Y) && check_bound == current_bound)
+       break
+
 
   }
 
@@ -323,8 +326,9 @@ mmpca_clust <- function(dtm,
             gamma = Vgamma_final,
             lda_algo = lda_algo,
             max.epochs = as.integer(max.epochs),
-            logLikelihoods = bounds,
-            n_epochs = epoch,
+            logLikelihoods = bounds[1:(ceiling((epoch - 1) * N)/keep)],
+            keep = as.integer(keep),
+            n_epochs = if (epoch != 1) as.integer(epoch - 1) else epoch,
             llhood = final_bound,
             icl = icl
             )
@@ -332,23 +336,23 @@ mmpca_clust <- function(dtm,
   res
 }
 
-
-computeVgamma = function(lda, dtm.aggr){
-
-  alpha = lda@alpha
-  Q = dim(dtm.aggr)[1]
-  K = lda@k
-  b <- dtm2ldaformat(dtm.aggr)
-  Nq = c();
-  for (q in 1:Q) {
-    Nq[q] = sum(b$documents[[q]][2,]) # total word count in cluster q
-  }
-
-  Egamma = lda@gamma
-  Vgamma = matrix(0, Q, K) # true gamma of Blei's paper
-  for (q in 1:Q) {
-    Vgamma[q,] = Egamma[q,]*(alpha*K + Nq[q])
-  }
-
-  return(Vgamma)
-}
+#
+# computeVgamma = function(lda, dtm.aggr){
+#
+#   alpha = lda@alpha
+#   Q = dim(dtm.aggr)[1]
+#   K = lda@k
+#   b <- dtm2ldaformat(dtm.aggr)
+#   Nq = c();
+#   for (q in 1:Q) {
+#     Nq[q] = sum(b$documents[[q]][2,]) # total word count in cluster q
+#   }
+#
+#   Egamma = lda@gamma
+#   Vgamma = matrix(0, Q, K) # true gamma of Blei's paper
+#   for (q in 1:Q) {
+#     Vgamma[q,] = Egamma[q,]*(alpha*K + Nq[q])
+#   }
+#
+#   return(Vgamma)
+# }

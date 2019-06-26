@@ -1,3 +1,4 @@
+#' @importFrom magrittr %>%
 plot_topics <- function(res, ...) {
 
   if (!requireNamespace("ggplot2", quietly = TRUE) ||
@@ -46,14 +47,36 @@ plot_topics <- function(res, ...) {
   gg
 }
 
-plot_bound <- function(res) {
+plot_bound <- function(res, ...) {
   if (is.null(res@logLikelihoods)) {
     stop("Bound evolution was not tracked, try restarting with the 'keep'
          argument set to a useful value.")
   }
-  if (requireNamespace("ggplot2", quietly = TRUE)) {
-    df <- 1
+
+  size = res@n_epochs*res@N
+  if (res@keep > size) {
+    print("The number of iteration is lower than 'keep'. Hence, the bound evolution
+          can't be plotted...")
+  } else if (size %% res@keep == 0) {
+    df <- data.frame(iteration = seq(1, size, by = res@keep),
+                   bound = res@logLikelihoods)
+  } else {
+    df <- data.frame(iteration = head(seq(1, size, by = res@keep), -1),
+                     bound = res@logLikelihoods)
   }
 
-  df
+  if (requireNamespace("ggplot2", quietly = TRUE)) {
+    gg <- ggplot2::ggplot(df, ggplot2::aes(x = iteration, y = bound)) +
+      ggplot2::geom_point(size = 0.6) +
+      ggplot2::geom_hline( yintercept = max(df$bound), show.legend = T,
+                           col = 'red', alpha = 0.5) +
+      ggplot2::scale_x_continuous(breaks = seq(0, size - 1, by = res@N),
+                                  labels = paste0('Epoch n0 : ', 1:res@n_epochs)
+                                  ) +
+      ggplot2::xlab('') +
+      ggplot2::ylab('Classification Evidence Lower Bound')
+    return(gg)
+  } else {
+    plot(df)
+  }
 }
