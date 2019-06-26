@@ -14,7 +14,14 @@ Imports:
     topicmodels,
     tm,
     Matrix,
-    slam
+    slam,
+    magrittr
 Suggests: 
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown,
+    aricode,
+    ggplot2,
+    tidytext
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr
