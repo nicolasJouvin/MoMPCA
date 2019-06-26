@@ -16,11 +16,23 @@
 #' @export
 #'
 #' @examples
-simulate_BBC = function(N, L,  theta_true, epsilon = 0, lambda=1){
+simulate_BBC = function(N, L, epsilon = 0, lambda=1, theta_true = NULL){
 
   data("BBCmsg")
   Q = 6
   K = 4
+
+  if (is.null(theta_true)) {
+    theta_true = matrix(0.17, Q, K)
+
+    for (i in 1:K) {
+      theta_true[i,i] = 0.5
+    }
+    theta_true[5,c(1,3)] = 0.33
+    theta_true[6,c(2,4)] = 0.33
+  }
+
+
   if (length(L) == 1) L <- rep(L, N)
 
   Pi = lambda^(Q - 0:(Q - 1))
@@ -62,13 +74,13 @@ simulate_BBC = function(N, L,  theta_true, epsilon = 0, lambda=1){
 
   x = tm::Corpus(tm::VectorSource(doc))
 
-  dtm.full <- tm::DocumentTermMatrix(x, control= list())
+  dtm.full <- tm::DocumentTermMatrix(x, control = list())
   voc.zero =  which(slam::col_sums(dtm.full) == 0)
-  if(length(voc.zero) != 0){
+  if (length(voc.zero) != 0) {
     dtm.full = dtm.full[,-voc.zero]
   }
   #rearange columns in alphabetical order
   dtm.full = dtm.full[,sort(dtm.full$dimnames$Terms)]
 
-  return(list(dtm.full=dtm.full, Ytruth=Ytruth, theta_true = theta_true, Z=Z))
+  return(list(dtm.full = dtm.full, Ytruth = Ytruth, Z = Z))
 }
