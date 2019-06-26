@@ -82,5 +82,5 @@ simulate_BBC = function(N, L, epsilon = 0, lambda=1, theta_true = NULL){
   #rearange columns in alphabetical order
   dtm.full = dtm.full[,sort(dtm.full$dimnames$Terms)]
 
-  return(list(dtm.full = dtm.full, Ytruth = Ytruth, Z = Z))
+  return(list(dtm.full = dtm.full, Ytruth = Ytruth, Z = Z, theta_true = theta_true))
 }
