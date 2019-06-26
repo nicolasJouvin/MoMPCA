@@ -73,6 +73,9 @@ setClass("mmpca_clust",
                       )
          )
 
+## ****************************
+## plot methods
+
 setMethod("show",
           signature = signature(object = "mmpca_clust"),
           definition = function(object) {
@@ -80,4 +83,21 @@ setMethod("show",
             }
           )
 
-# new('mmpca_clust', call = call('sqrt', 1))
+
+#' @rdname plot
+#' @export
+setMethod(f = "plot",
+          signature = signature('mmpca_clust', "missing"),
+          definition = function(x, type = "topics", ...) {
+            switch(type,
+                   "topics" = {
+                     plot_topics(res, ...)
+                     },
+                   "bound" = {
+                     plot_bound(res, ...)
+                   },
+                   stop('This plot type does not exists.')
+            )
+            }
+          )
+
