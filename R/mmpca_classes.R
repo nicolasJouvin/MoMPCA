@@ -1,60 +1,56 @@
-#' @importClassesFrom topicmodels LDA_VEMcontrol OPTcontrol
+
+#' @include mmpcaClustcontrol.R
+NULL
+
+
+
+#' @title mmpcaClust class
+#' @description An S4 class representing a fitted mmpca model.
+#' @name mmpcaClust-class
 #'
-#' @slot alpha numeric.
-#' @slot control_lda_init list
-#' @slot control_lda_loop list
-setClass(Class = "mmpca",
-                  slots = list(control_lda_init = "LDA_VEMcontrol",
-                               control_lda_loop = "LDA_VEMcontrol")
-                  )
-
-init_mmpca = function(.Object, control_lda_init, control_lda_loop, ...) {
-
-  if (missing(control_lda_init)) {
-    control_lda_init <- new("LDA_VEMcontrol",
-                            estimate.alpha = FALSE,
-                             estimate.beta = TRUE,
-                             alpha = 1,
-                             verbose = 0L,
-                             nstart = 1L
-                             )
-  }
-
-  if (missing(control_lda_loop)) {
-    control_lda_loop <- new("LDA_VEMcontrol",
-                            estimate.alpha = FALSE,
-                             alpha = 1,
-                             estimate.beta = FALSE,
-                             initialize = "model",
-                             nstart = 1L,
-                             verbose = 0L,
-                             var = new('OPTcontrol', iter.max = 1e8L, tol = 1e-9),
-                             em = new('OPTcontrol', iter.max = 1L)
-    )
-  }
-
-  return(list(.Object = .Object,
-              control_lda_init = control_lda_init,
-              control_lda_loop = control_lda_loop,
-              ... = ...
-              )
-         )
-}
-
-setMethod(f = "initialize", signature = "mmpca",
-          definition = function(.Object, control_lda_init, control_lda_loop, ...) {
-            args <- init_mmpca(.Object, control_lda_init, control_lda_loop, ...)
-            .Object <- do.call("callNextMethod", args)
-            invisible(.Object)
-          }
-)
-
-
+#' @section Objects from the class:
+#' Object of class "\code{mmpcaClust}" are returned by
+#'   \code{\link{mmpca_clust}}()
+#'
+#' @slot call A \code{\link{call}} object specifying the call
+#' @slot method The method used in the call
+#' @slot clustering The final partition found by the algorithm
+#' @slot controls An object of class \code{\linkS4class{mmpcaClustcontrol}}
+#'   containing the controls used in the VEM algorithm on the aggregated DTM
+#'   during the loop. The slots \code{controls@@control_lda_init} where only use
+#'   when init.beta == 'lda'.
+#' @slot K An integer specifying the number of topics.
+#' @slot Q An integer specifying he number of clusters.
+#' @slot N An integer specifying the number of observations.
+#' @slot V An integer specifying the number of variables.
+#' @slot beta The (KxV) topic matrix.
+#' @slot gamma A (QxK) matrix containing the variational paramaters of the
+#'   variational distribution of each $\\theta_q$ in its rows.
+#' @slot lda_algo An object of class "\code{LDA}" (cf.
+#'   \code{\linkS4class{TopicModel}}) containing the results of the
+#'   \code{\link[topicmodels]{LDA}}() function applied to the agreggated DTM,
+#'   with control \code{controls@@control_lda_loop}
+#' @slot max.epochs The maximum number of pass through the whole dataset in the
+#'   algorithm.
+#' @slot logLikelihoods A numeric vector containing the evolution of the
+#'   variational bound every \code{keep} iteration.
+#' @slot keep An integer specifying the . Mostly useful for the plot function.
+#' @slot n_epochs The number of pass through the datasets before convergence.
+#'   see details
+#' @slot llhood The final value of the variational lower bound.
+#' @slot Yinit The value of the initial partition.
+#' @slot icl The Integrated Classification Likelihood value.
+#'
+#' @details The CVEM method is the branch & bound greedy procedure proposed in
+#'   the original paper of ???. The number of epochs in the \code{n_epochs} slot
+#'   is actually the true number of pass minus 1 (unless \code{max.epochs} was
+#'   reached). Indeed, the last pass before convergence does not change either
+#'   the bound or the \code{clustering}, hence it is removed of the counter.
+#'
 #' @importClassesFrom topicmodels LDA
-setClass("mmpca_clust",
-         contains = c("mmpca"),
-         slots = list(
-           # call = "call",
+#' @export
+setClass("mmpcaClust",
+         slots = list(call = "call",
                       method = "character",
                       clustering = "ANY",
                       K = "integer",
@@ -70,7 +66,8 @@ setClass("mmpca_clust",
                       n_epochs = "integer",
                       llhood = "numeric",
                       Yinit = "vector",
-                      icl = "numeric"
+                      icl = "numeric",
+                      controls = "mmpcaClustcontrol"
                       )
          )
 
@@ -78,17 +75,16 @@ setClass("mmpca_clust",
 ## plot methods
 
 setMethod("show",
-          signature = signature(object = "mmpca_clust"),
+          signature = signature(object = "mmpcaClust"),
           definition = function(object) {
             cat("A", class(object), "mmpca model with", object@Q, "clusters and", object@K, "topics.\n")
             }
           )
 
 
-#' @rdname plot
 #' @export
 setMethod(f = "plot",
-          signature = signature('mmpca_clust', "missing"),
+          signature = signature('mmpcaClust', "missing"),
           definition = function(x, type = "topics", ...) {
             switch(type,
                    "topics" = {
