@@ -1,24 +1,36 @@
 #' @title simulate_BBC
 #'
-#'   This function simulate from the MMPCA model with an additional noise
-#'   parameter epsilon.
+#' @description This function simulate from the MMPCA model with an additional
+#'   noise parameter epsilon. The number of cluster is Q=6 for K=4 topics. The
+#'   parameter beta is taken to be the row normalized document-term matrix of 4
+#'   BBC messages contained in BBCmsg.
 #'
-#' @param N number of observations
+#' @param N number of observations.
 #' @param L vector of length N containing the total count per observations.
 #'   Duplicated if integer.
 #' @param epsilon The noise level in the latent space. Quantify how far the
 #'   distribution is from theta_true
 #' @param lambda A parameter quantifying the class proportion. lambda=1 means
-#'   balanced cluster sizes, lower means that the first cluster are bigger.
-#' @param theta_true The true parameter theta for the simulation.
+#'   balanced cluster sizes, lower means that the last clusters are bigger, with
+#'   an geometric decay in cluster size for the first ones.
+#' @param theta_true The true parameter theta for the simulation. If \code{NULL}
+#'   (default) then it is initialized to the default value of the experimental
+#'   section of the paper.
 #'
-#' @return
+#' @return A list with names \itemize{ \item \code{dtm.full}: A
+#'   \code{\link[tm]{DocumentTermMatrix}} object containing the simulated
+#'   document-term matrix \item \code{Ytruth}: the simulated partition \item
+#'   theta_true The parameter of the simulation }
 #' @export
 #'
 #' @examples
-simulate_BBC = function(N, L, epsilon = 0, lambda=1, theta_true = NULL){
+#' simu <- simulate_BBC(N = 300, L = 400, epsilon = 0, lambda = 1)
+#' dtm <- simu$dtm.full
+#' Ytruth <- simu$Ytruth
+#'
+#'
 
-  data("BBCmsg")
+simulate_BBC = function(N, L, epsilon = 0, lambda=1, theta_true = NULL){
   Q = 6
   K = 4
 
@@ -30,6 +42,10 @@ simulate_BBC = function(N, L, epsilon = 0, lambda=1, theta_true = NULL){
     }
     theta_true[5,c(1,3)] = 0.33
     theta_true[6,c(2,4)] = 0.33
+  } else if (dim(theta_true) != c(6L, 4L)) {
+    stop("'theta_true should be a matrix of dimension c(6, 4), currently of dim ",
+                dim(theta_true)
+         )
   }
 
 
@@ -82,5 +98,5 @@ simulate_BBC = function(N, L, epsilon = 0, lambda=1, theta_true = NULL){
   #rearange columns in alphabetical order
   dtm.full = dtm.full[,sort(dtm.full$dimnames$Terms)]
 
-  return(list(dtm.full = dtm.full, Ytruth = Ytruth, Z = Z, theta_true = theta_true))
+  return(list(dtm.full = dtm.full, Ytruth = Ytruth, theta_true = theta_true))
 }

@@ -1,3 +1,30 @@
+#' Perform clustering of count data using the MMPCA model.
+#'
+#' @param dtm an NxV \code{\link[tm]{DocumentTermMatrix}} with term-frequency
+#'   weighting.
+#' @param Q The number of clusters
+#' @param K The numer of topics (latent space dimension)
+#' @param model A given model in which to take the controls for the VE-steps in
+#'   the greedy procedure. If NULL, a model of class \code{\link{mmpcaClust}} is
+#'   created with default controls (see \code{\linkS4class{mmpcaClustcontrol}}
+#'   class for more details).
+#' @param Yinit Parameter for the initialization of Y. Tt can be either:
+#'   \itemize{ \item a string specifying the initialization procedure. It should
+#'   be one of ('random', 'HTSCluster', 'nmf', 'kmeans_lda', 'gmm_lda'). See
+#'   \code{\link{benchmarks}} functions for more details. \item A vector of
+#'   length N with Q modalities, specifying the initialization clustering. }
+#' @param method The clustering algorithm to be used. Currently, only "CVEM" is
+#'   available.
+#' @param init.beta Parameter for the initialization of the matrix beta. It can
+#'   be either: \itemize{ \item a string specifying the initialization
+#'   procedure. It should be one of ('lda', 'nmf', 'kmeans_lda'). See
+#'   \code{\link[init_fuctions]{init functions}} for more details. \item A `K. }
+#' @param keep The evolution of the bound is tracked every \code{keep} iteration
+#' @param max.epochs Specifies the maximum number of pass allowed on the whole
+#'   dataset.
+#' @param verbose verbosity level
+#'
+#' @return An object of class \code{"\linkS4class{mmpcaClust}"} containing the fitted model.
 #' @export
 mmpca_clust <- function(dtm,
                         Q,
@@ -16,11 +43,11 @@ mmpca_clust <- function(dtm,
 
   mycall = match.call()
   if (is.null(model)) {
-    model <- new("mmpca")
+    model <- new("mmpcaClust")
   }
 
-  control_lda_init = model@control_lda_init
-  control_lda_loop = model@control_lda_loop
+  control_lda_init = model@controls@control_lda_init
+  control_lda_loop = model@controls@control_lda_loop
 
   if (control_lda_loop@alpha != control_lda_init@alpha)
     warning("Two hyper-parameters alpha")
@@ -29,11 +56,11 @@ mmpca_clust <- function(dtm,
   N = dim(dtm)[1]
   V = dim(dtm)[2]
 
-  ###########################################
-  ## Initialisation of Y
+  ## ------------------------------------------------------------
+  ## ------------------ Initialisation of Y ---------------------
   ##
   ## Several benchmarks possible.
-  ###########################################
+
   init_method = 'user provided'
   if (is.character(Yinit) && length(Yinit) == 1) {
     init_method <- Yinit
@@ -51,8 +78,8 @@ mmpca_clust <- function(dtm,
 
   Y <- Yinit
 
-  ###################################################
-  ## ------ Different initialization for beta ---------
+  ## ------------------------------------------------------------
+  ## ----------- Different initialization for beta --------------
   ##
   ## * User defined : in this case init.beta is a user
   ##                  defined init matrix, of dim (KxV),
@@ -66,7 +93,6 @@ mmpca_clust <- function(dtm,
   ##           hyper-parameter alpha is handeled carefully in the controls.
   ##
   ## * 'nmf' : take the basis of the NMF decomposition of the full dtm.
-  ###################################################
 
   ## dummy topicmodels::lda object to store beta init
   lda_init = topicmodels::LDA(dtm, k = K,
@@ -98,13 +124,12 @@ mmpca_clust <- function(dtm,
     stop('init.beta argument must be a matrix or a string specifying the initialization method for beta.')
   }
 
-  ###########################################
-  ## Compute the bounds with topicmodels
+  ## ------------------------------------------------------------
+  ## Compute the bounds with topicmodels::
   ##
   ## Only the var step is done, control
   ## estimate.beta=F ensures the M-step is
   ## locked, hence not re-restimation of beta
-  ############################################
 
   ## Construct meta observations
   P = Matrix::t(Matrix::sparseMatrix(i = 1:N, j = Y, x = rep(1,N)))
@@ -122,14 +147,14 @@ mmpca_clust <- function(dtm,
                  model = lda_init)
 
 
-  ###################################################
-  ## ------ Branch & Bound with topicmodels ---------
+  ## ------------------------------------------------------------
+  ## -------------- Branch & Bound with topicmodels -------------
   ##
   ##
   ##   1 loop with beta fixed = B&B
   ##      1 loop over each observation = test each swaps
   ##         1 loop over q = VE-step to obtain the bound modification
-  ###################################################
+
 
   ## Setup quantities used in the B&B
   csize = table(Y)
@@ -146,9 +171,6 @@ mmpca_clust <- function(dtm,
 
   ## stock the evolution of the bound every keep iterations
   bounds = c()
-
-  ## for debugging : to keep track of the conservation of sum(Vgammas)
-  # theoretical.gammaSum = Q*K*alpha + sum(dtm)
 
   if (verbose > 1) cat(' ---- Begin B&B on ', N, ' documents. ----\n')
   for (epoch in 1:max.epochs) {
@@ -199,9 +221,9 @@ mmpca_clust <- function(dtm,
             sum(csize_temp[c(Y[d],q)] * log(Pi_temp[c(Y[d], q)]))
         }
 
-        #######################
+        ## ------------------------------------------------------------
         # Select best swap
-        #######################
+
         best = which.max(delta_bound) # find the best swap
 
         if (best != Y[d]) { # apply the swap : document d goes into cluster best
@@ -252,9 +274,9 @@ mmpca_clust <- function(dtm,
 
   }
 
-  ###################################################################
+  ## ------------------------------------------------------------
   ## Re-estimate beta on the aggregated DTM at the end of B&B ---
-  ###################################################################
+
 
   # lda_algo = topicmodels::LDA(dtm_algo,
   #                k = K,
@@ -271,50 +293,25 @@ mmpca_clust <- function(dtm,
   beta <- exp(lda_algo@beta) / rowSums(exp(lda_algo@beta))
 
 
-  ## Check for conservation of sum(Vgammas)
-  # if (debug) {
-  #   Vgamma = computeVgamma(lda = lda_algo, dtm.aggr = dtm_algo)
-  #   gammaSum = sum(Vgamma)
-  #   if (gammaSum != theoretical.gammaSum )
-  #     warning('Problem : total sum of pseudo counts not conserved !')
-  # }
-
-  #######################
+  ## ------------------------------------------------------------
   # Compute final bound
-  #######################
 
   final_bound = sum(meta_bounds)
 
-  ###########################
+  ## ------------------------------------------------------------
   # compute final $\gammas$
-  ###########################
-
 
   P = Matrix::t(Matrix::sparseMatrix(i = 1:N, j = Y, x = rep(1,N)) )
   dtm_final = slam::as.simple_triplet_matrix(P %*% DTMtoSparse(dtm))
 
-  b <- topicmodels::dtm2ldaformat(dtm_final)
-  Nq = c(); NVq = c()
-  for (q in 1:Q) {
-    Nq[q] = sum(b$documents[[q]][2,]) # total word count in cluster q
-    NVq[q] = length(b$documents[[q]][1,]) # unique
-  }
+  Vgamma_final <- computeVgamma(lda = lda_algo, dtm.aggr = dtm_final)
 
-  Egama = lda_algo@gamma
-  Vgamma_final = matrix(0, Q, K) # true gamma of Blei's paper
-  for (q in 1:Q) {
-    Vgamma_final[q,] = Egama[q,]*(alpha*K + Nq[q])
-  }
-
-  Vgamma_final <- Vgamma_final / rowSums(Vgamma_final)
-
-  ########################
+  ## ------------------------------------------------------------
   # Compute ICL
-  ########################
   icl <- final_bound - ((K * (V - 1))) - (Q - 1) - Q * (K - 1)
 
-  res <- new("mmpca_clust",
-            # call = mycall,
+  res <- new("mmpcaClust",
+            call = mycall,
             method = method,
             Yinit = Yinit,
             clustering = Y,
@@ -328,31 +325,31 @@ mmpca_clust <- function(dtm,
             max.epochs = as.integer(max.epochs),
             logLikelihoods = bounds[1:(ceiling((epoch - 1) * N)/keep)],
             keep = as.integer(keep),
-            n_epochs = if (epoch != 1) as.integer(epoch - 1) else epoch,
+            n_epochs = if (epoch != 1 || epoch < max.epochs) as.integer(epoch - 1) else epoch,
             llhood = final_bound,
-            icl = icl
+            icl = icl,
+            controls = model@controls
             )
-
   res
 }
 
-#
-# computeVgamma = function(lda, dtm.aggr){
-#
-#   alpha = lda@alpha
-#   Q = dim(dtm.aggr)[1]
-#   K = lda@k
-#   b <- dtm2ldaformat(dtm.aggr)
-#   Nq = c();
-#   for (q in 1:Q) {
-#     Nq[q] = sum(b$documents[[q]][2,]) # total word count in cluster q
-#   }
-#
-#   Egamma = lda@gamma
-#   Vgamma = matrix(0, Q, K) # true gamma of Blei's paper
-#   for (q in 1:Q) {
-#     Vgamma[q,] = Egamma[q,]*(alpha*K + Nq[q])
-#   }
-#
-#   return(Vgamma)
-# }
+
+computeVgamma = function(lda, dtm.aggr){
+
+  alpha = lda@alpha
+  Q = dim(dtm.aggr)[1]
+  K = lda@k
+  b <- topicmodels::dtm2ldaformat(dtm.aggr)
+  Nq = c();
+  for (q in 1:Q) {
+    Nq[q] = sum(b$documents[[q]][2,]) # total word count in cluster q
+  }
+
+  Egamma = lda@gamma
+  Vgamma = matrix(0, Q, K) # true gamma of Blei's paper
+  for (q in 1:Q) {
+    Vgamma[q,] = Egamma[q,]*(alpha*K + Nq[q])
+  }
+
+  Vgamma
+}
