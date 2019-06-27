@@ -1,11 +1,23 @@
-## TODO add NAMESPACE checks to see if packages are installed
+#' @title Benchmarks functions for clustering
+#' @description These are wrapper to other methods for the clustering of count
+#'   data. They can be use
+#' @rdname benchmarks-functions
+#' @name benchmarks-functions
+NULL
 
 
-######################
-# Benchmarks
+#' @section benchmark.htsclust:
+#' Clustering of count data via the Poisson mixture model of Rau et. al.
+#' @rdname benchmarks-functions
+#' @param dtm.full
+#' @param Q
+#' @param ... : params to pass onto the PoisMixClus function of the HTSCluster package
+#' @note zExper
+#' @return
+#' @export
+#' @
+#' @examples
 benchmark.htsclust = function(dtm.full, Q, ...){
-  #' Clustering of count data via the Poisson mixture model of Rau et. al.
-  #' @param ... : params to pass onto the PoisMixClus function of the HTSCluster package
 
   if (!requireNamespace("HTSCluster", quietly = T)) {
     stop('Package HTSCluster needed for this initialization function to work. Please install it.',
@@ -22,6 +34,19 @@ benchmark.htsclust = function(dtm.full, Q, ...){
 
 }
 
+
+
+#' @section \code{benchmarks.nmf}:
+#' Perform NMF document clustering of Lee and Seung .
+#' @rdname benchmarks-functions
+#' @param dtm.full
+#' @param Q
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
 benchmark.nmf = function(dtm.full, Q, ...){
 
   if (!requireNamespace("NMF", quietly = TRUE)) {
@@ -51,8 +76,19 @@ benchmark.nmf = function(dtm.full, Q, ...){
 }
 
 
+#' @title benchmark.LDA Cluster with MAP on theta, theta is estimated with a
+#'   LDA topicmodels with Q topics
+#' @rdname benchmarks-functions
+#'
+#' @param dtm.full
+#' @param Q
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
 benchmark.LDA = function(dtm.full, Q, ...){
-  # Cluster with MAP on theta, theta is estimated with a LDA topicmodels with Q topics
   baseline.lda = topicmodels::LDA(dtm.full,
                                   control = list(estimate.alpha = FALSE,
                                                  estimate.beta = TRUE,
@@ -67,8 +103,20 @@ benchmark.LDA = function(dtm.full, Q, ...){
   return(Y.baseline.lda)
 }
 
+#' @section \code{benchmarks.kmeans_lda}:
+#' Cluster the matrix theta obtained by a topicmodels LDA with K.est topics
+#' @rdname benchmarks-functions
+#'
+#' @param dtm.full
+#' @param Q
+#' @param K
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
 benchmark.kmeans_lda = function(dtm.full, Q, K, ...){
-  #' Cluster the matrix theta obtained by a topicmodels LDA with K.est topics
 
   baseline.lda = topicmodels::LDA(dtm.full,
                                   k = K,
@@ -85,16 +133,36 @@ benchmark.kmeans_lda = function(dtm.full, Q, K, ...){
   return(Y.baseline.kmeans_theta)
 }
 
-
+#' @title benchmark.kmeans_dtm
+#' @section \code{benchmarks.kmeans_dtm}:
+#' Naive Clustering on the dtm directly
+#' @rdname benchmarks-functions
+#' @param dtm.full
+#' @param Q
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
 benchmark.kmeans_dtm = function(dtm.full, Q, ...){
-  #' Naive Clustering on the dtm directly
 
   Y.baseline.kmeans_theta = stats::kmeans(dtm.full, centers = Q, ...)$cluster
   return(Y.baseline.kmeans_theta)
 }
 
+
+
+#' @section \code{benchmark.multmix} Cluster dtm through the mixture of multinomials models.
+#'   Essentially a wrapper around \code{\link{mixtools}{multmix}}().
+#' @rdname benchmarks-functions
+#' @param dtm.full
+#'
+#' @param Q
+#' @param nruns
+#'
+#' @importFrom utils capture.output
 benchmark.multmix = function(dtm.full, Q, nruns) {
-  #' Clustering with the mixture of multinomials models
 
   if (!requireNamespace("mixtools", quietly = T)) {
     stop('Package mixmult needed for this initialization function to work. Please install it.',
@@ -123,9 +191,22 @@ benchmark.multmix = function(dtm.full, Q, nruns) {
 
 }
 
+
+#' @section \code{benchmark.nmfem} NMFEM algo from carel et. al. Amounts to do MLE in a frequentist
+#'   setting of MMPCA model.
+#' @rdname benchmarks-functions
+#'
+#' @param dtm
+#' @param Q
+#' @param K
+#' @param nruns
+#'
+#' @return
+#' @export
+#'
+#' @examples
 benchmark.nmfem = function(dtm, Q, K, nruns) {
-  #' NMFEM algo from carel et. al.
-  #' MLE in a frequentist setting of MMPCA model
+
 
   if (!requireNamespace("nmfem", quietly = TRUE)) {
     stop('Package nmfem needed for this initialization function to work. Please install it.',
@@ -162,8 +243,26 @@ benchmark.nmfem = function(dtm, Q, K, nruns) {
 
 }
 
+
+#' @title \code{benchmark.gmm_lda}() Fit a Q-GMM in a K-LDA's latent space (Rmixmod)
+#' @rdname benchmarks-functions
+#' @section benchmarks.gmm_lda:
+#' dsncs
+#' sdcknsqc
+#'
+#' sdlkvnsd
+#'
+#' @param dtm
+#' @param Q
+#' @param K
+#' @param nruns
+#' @param seed
+#'
+#' @return
+#' @export
+#'
+#' @examples
 benchmark.gmm_lda = function(dtm, Q, K , nruns=1, seed=NULL) {
-  #' Fit a Q-GMM in a K-LDA's latent space (Rmixmod)
 
   if (!requireNamespace("Rmixmod", quietly = TRUE)) {
     stop('Package Rmixmod needed for this initialization function to work. Please install it.',
