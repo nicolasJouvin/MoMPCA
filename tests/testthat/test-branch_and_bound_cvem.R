@@ -1,16 +1,9 @@
 Q = 6
 K = 4
 
-theta_true = matrix(0, Q, K)
-for (i in 1:K) {
-  theta_true[i,i] = 1
-}
-theta_true[5,] = 1/2 * c(1, 0, 1, 0)
-theta_true[6,] = 1/2 * c(0, 1, 0, 1)
-
 N = 8
 
-simu <- simulate_BBC(N = N, L = 100, epsilon = 0, theta_true = theta_true)
+simu <- simulate_BBC(N = N, L = 100, epsilon = 0, theta_true = NULL)
 dtm.full = simu$dtm.full
 V = dim(dtm.full)[2]
 Ytruth = simu$Ytruth
@@ -22,7 +15,7 @@ res <- mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                    verbose = 0)
 
 test_that("check slots", code = {
-  expect_is(res, "mmpca_clust")
+  expect_is(res, "mmpcaClust")
   expect_equal(res@K, 4)
   expect_equal(res@Q, 6)
   expect_length(unique(res@clustering), Q)
@@ -38,9 +31,8 @@ test_that("check dims", code = {
   expect_equal(dim(res@gamma), c(6, 4))
 })
 
-test_that("Check Beta and Gamma are proba matrix", code = {
+test_that("Check that Beta is proba matrix", code = {
   expect_equal(Matrix::rowSums(res@beta), rep(1, K))
-  expect_equal(Matrix::rowSums(res@gamma), rep(1, Q))
 })
 
 test_that("Check wrong Yinit error message", code = {

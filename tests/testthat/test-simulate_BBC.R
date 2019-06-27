@@ -6,7 +6,6 @@ simu <- simulate_BBC(N = N, L = 100, epsilon = 0.1, lambda = 1, theta_true = NUL
 
 test_that("Check that simu dimensions are correct", code = {
   expect_equal(dim(simu$dtm.full)[1], N)
-  expect_equal(dim(simu$Z), c(N, K))
   expect_equal(length(simu$Ytruth), N)
   expect_equal(dim(simu$theta_true), c(Q,K))
 })
