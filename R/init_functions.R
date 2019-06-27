@@ -75,8 +75,6 @@ initialize_Y <- function(dtm, Q, K, init='random'){
     Y = run$labels
   } else if (init == 'nmf') {
     Y = benchmark.nmf(dtm.full = dtm, Q = Q)
-  } else if (init == 'nmf_kmeans') {
-    Y = benchmark.nmf_kmeans(dtm.full = dtm, Q = Q, K = K)
   } else if (init == 'kmeans_lda') {
     Y = benchmark.kmeans_lda(dtm.full = dtm, Q = Q, K = K)
   } else if (init == 'gmm_lda') {
