@@ -9,6 +9,7 @@ Description: More about what it does (maybe more than one line)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.4.4)
 Imports:
     methods,
     topicmodels,
@@ -25,3 +26,15 @@ Suggests:
     tidytext
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
+Collate: 
+    'MMPCA.R'
+    'benchmarks.R'
+    'branch_and_bound_cvem.R'
+    'data.R'
+    'init_functions.R'
+    'mmpcaClustcontrol.R'
+    'mmpca_classes.R'
+    'plot.R'
+    'simulate_BBC.R'
+    'utility_functions.R'
+    'utils-pipe.R'
