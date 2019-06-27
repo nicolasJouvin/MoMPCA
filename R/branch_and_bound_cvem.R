@@ -24,7 +24,8 @@
 #'   dataset.
 #' @param verbose verbosity level
 #'
-#' @return An object of class \code{"\linkS4class{mmpcaClust}"} containing the fitted model.
+#' @return An object of class \code{"\linkS4class{mmpcaClust}"} containing the
+#'   fitted model.
 #' @export
 mmpca_clust <- function(dtm,
                         Q,
@@ -37,9 +38,12 @@ mmpca_clust <- function(dtm,
                         max.epochs = 100L,
                         verbose = 1L) {
 
-  if (as.integer(K) != K || as.integer(K) < 2) stop("'K' needs to be an integer of at least 2")
-  if (as.integer(Q) != Q || as.integer(Q) < 2) stop("'Q' needs to be an integer of at least 2")
-  if (as.integer(keep) != keep || keep < 0) stop("'keep' needs to be an non-negative integer")
+  if (as.integer(K) != K || as.integer(K) < 2)
+    stop("'K' needs to be an integer of at least 2")
+  if (as.integer(Q) != Q || as.integer(Q) < 2)
+    stop("'Q' needs to be an integer of at least 2")
+  if (as.integer(keep) != keep || keep < 0)
+    stop("'keep' needs to be an non-negative integer")
 
   mycall = match.call()
   if (is.null(model)) {
@@ -109,7 +113,8 @@ mmpca_clust <- function(dtm,
 
   ## initialize the lda_init@beta slot
   if (is.matrix(init.beta) ) {
-    if (!identical(dim(init.beta), c(K, V)) || identical(Matrix::rowSums(init.beta), rep(1, K))) {
+    if (!identical(dim(init.beta), c(K, V)) ||
+        identical(Matrix::rowSums(init.beta), rep(1, K))) {
       stop('init.beta must be a KxV matrix which rows sums to 1.')
     }
 
@@ -121,7 +126,8 @@ mmpca_clust <- function(dtm,
     lda_init@beta = log(beta.init)
     if (verbose > 0) cat('... Finished. \n')
   } else {
-    stop('init.beta argument must be a matrix or a string specifying the initialization method for beta.')
+    stop('init.beta argument must be a matrix or a string specifying
+         the initialization method for beta.')
   }
 
   ## ------------------------------------------------------------
@@ -195,7 +201,8 @@ mmpca_clust <- function(dtm,
       delta_bound = rep(0, Q) # lower bounds change induced by each possible swap
       lda_temp = list() # list of LDA models to stock the bound change for each swap
 
-      if (csize[Y[d]] > 1) { # only apply the swap if the cluster is not going to be empty (=> numerical issues)
+      # only apply the swap if the cluster is not going to be empty (=> numerical issues)
+      if (csize[Y[d]] > 1) {
 
         for (q in setdiff(1:Q, Y[d])) {
           Y_temp = Y
