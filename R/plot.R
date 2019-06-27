@@ -1,4 +1,3 @@
-#' @importFrom magrittr %>%
 plot_topics <- function(res, ...) {
 
   if (!requireNamespace("ggplot2", quietly = TRUE) ||
@@ -46,6 +45,7 @@ plot_topics <- function(res, ...) {
 
   gg
 }
+
 
 plot_bound <- function(res, ...) {
   if (is.null(res@logLikelihoods)) {
