@@ -2,83 +2,40 @@
 % Please edit documentation in R/benchmarks.R
 \name{benchmarks-functions}
 \alias{benchmarks-functions}
-\alias{benchmark.htsclust}
-\alias{benchmark.nmf}
-\alias{benchmark.LDA}
+\alias{benchmark.random}
 \alias{benchmark.kmeans_lda}
-\alias{benchmark.kmeans_dtm}
-\alias{benchmark.multmix}
-\alias{benchmark.nmfem}
-\alias{benchmark.gmm_lda}
 \title{Benchmarks functions for clustering}
 \usage{
-benchmark.htsclust(dtm.full, Q, ...)
+benchmark.random(dtm, Q, ...)
 
-benchmark.nmf(dtm.full, Q, ...)
-
-benchmark.LDA(dtm.full, Q, ...)
-
-benchmark.kmeans_lda(dtm.full, Q, K, ...)
-
-benchmark.kmeans_dtm(dtm.full, Q, ...)
-
-benchmark.multmix(dtm.full, Q, nruns)
-
-benchmark.nmfem(dtm, Q, K, nruns)
-
-benchmark.gmm_lda(dtm, Q, K, nruns = 1, seed = NULL)
+benchmark.kmeans_lda(dtm, Q, K, nruns = 1, ...)
 }
 \arguments{
-\item{dtm.full}{}
+\item{dtm}{an S4 object of class \code{\linkS4class{mmpcaClust}}}
 
-\item{...}{: params to pass onto the PoisMixClus function of the HTSCluster package}
+\item{Q}{The number of clusters}
 
-\item{nruns}{}
+\item{K}{Number of topics (dimension of the latent space).}
 
-\item{seed}{}
-
-\item{...}{}
-
-\item{...}{}
-
-\item{...}{}
-
-\item{...}{}
-
-\item{nruns}{}
+\item{nruns}{Number of restart of the \code{\link[stats]{kmeans}}()
+algorithm.}
+}
+\value{
+A vector of size equal to the number of row of \code{dtm}, containing
+  a Q-clustering
 }
 \description{
 These are wrapper to other methods for the clustering of count
-  data. They can be use
+  data. They can be used to initialize the clustering. It is also possible to
+  implement your own benchmark function depending on other packages.
 }
-\note{
-zExper
-}
-\section{benchmark.htsclust}{
+\section{\code{benchmark.random}}{
 
-Clustering of count data via the Poisson mixture model of Rau et. al.
-}
-
-\section{\code{benchmarks.nmf}}{
-
-Perform NMF document clustering of Lee and Seung .
+Random initialisation of the clustering. Arguments K and nruns are unused
 }
 
 \section{\code{benchmarks.kmeans_lda}}{
-
-Cluster the matrix theta obtained by a topicmodels LDA with K.est topics
-}
-
-\section{\code{benchmarks.kmeans_dtm}}{
-
-Naive Clustering on the dtm directly
-}
-
-\section{benchmarks.gmm_lda}{
-
-dsncs
-sdcknsqc
-
-sdlkvnsd
+ Cluster the matrix theta obtained by a
+  topicmodels LDA with K topics
 }
 

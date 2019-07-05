@@ -17,23 +17,25 @@ weighting.}
 \item{K}{The numer of topics (latent space dimension)}
 
 \item{model}{A given model in which to take the controls for the VE-steps in
-the greedy procedure. If NULL, a model of class \code{\link{mmpcaClust}} is
+the greedy procedure. If NULL, a model of class \code{\linkS4class{mmpcaClust}} is
 created with default controls (see \code{\linkS4class{mmpcaClustcontrol}}
 class for more details).}
 
 \item{Yinit}{Parameter for the initialization of Y. Tt can be either:
-\itemize{ \item a string specifying the initialization procedure. It should
-be one of ('random', 'HTSCluster', 'nmf', 'kmeans_lda', 'gmm_lda'). See
-\code{\link{benchmarks}} functions for more details. \item A vector of
-length N with Q modalities, specifying the initialization clustering. }}
+\itemize{ \item a string or a function specifying the initialization
+procedure. It should be one of ('random', 'kmeans_lda'). See
+\code{\link{benchmarks-functions}} functions for more details. \item A
+vector of length N with Q modalities, specifying the initialization
+clustering. }}
 
 \item{method}{The clustering algorithm to be used. Currently, only "CVEM" is
 available.}
 
 \item{init.beta}{Parameter for the initialization of the matrix beta. It can
 be either: \itemize{ \item a string specifying the initialization
-procedure. It should be one of ('lda', 'nmf', 'kmeans_lda'). See
-\code{\link[init_fuctions]{init functions}} for more details. \item A `K. }}
+procedure. It should be one of ('random', 'lda'). See
+\code{\link{initializeBeta}}() for more details. \item A KxV matrix with
+each row summing to 1.}}
 
 \item{keep}{The evolution of the bound is tracked every \code{keep} iteration}
 
@@ -43,7 +45,8 @@ dataset.}
 \item{verbose}{verbosity level}
 }
 \value{
-An object of class \code{"\linkS4class{mmpcaClust}"} containing the fitted model.
+An object of class \code{"\linkS4class{mmpcaClust}"} containing the
+  fitted model.
 }
 \description{
 Perform clustering of count data using the MMPCA model.

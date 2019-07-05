@@ -2,15 +2,34 @@
 % Please edit documentation in R/init_functions.R
 \name{initializeBeta}
 \alias{initializeBeta}
-\title{Function to calculate Beta on a given corpus
-Several choices are available}
+\title{Beta initialization}
 \usage{
 initializeBeta(dtm, init.beta, K, verbose, control_lda_init)
 }
+\arguments{
+\item{dtm}{An object of class \code{\link[tm]{DocumentTermMatrix}}}
+
+\item{init.beta}{A string specifying the method, either \itemize{\item
+'random': Initialization à la Blei et. al. with 1/V coefficient everywhere
++ a small uniform noise U[0, 1e-10] on every coefficients. \item 'lda':
+Recommanded. Uses the beta of LDA algorithm via tha CVEM algorithm, with an
+initialization via 5 repeat of the gibbs sampling algorithm with 1000
+burning iterations and 1000 iterations.  }}
+
+\item{K}{The number of topics (dimension of the latent space).}
+
+\item{verbose}{The verbosity level. Only prints a message at function
+activation.}
+
+\item{control_lda_init}{The control for \code{\link[topimodels]{LDA}}(). Only
+used when \code{init.beta} == 'lda'.}
+}
 \value{
-a KxV matrix that which rows sums to 1
+A KxV matrix with each row summing to 1.
 }
 \description{
-Function to calculate Beta on a given corpus
-Several choices are available
+Used in the \code{\link{mmpca_clust}}() function to initialize
+  beta. It can be either "random" or "nmf". Please not that the
+  \code{\link{mmpca_clust}}() function also allow for a user given beta
+  matrix. In this case, this function is not used.
 }
