@@ -1,18 +1,30 @@
 
-
-##****************************
-## Initialize matrix beta
-
+#' @title Beta initialization
+#' @description Used in the \code{\link{mmpca_clust}}() function to initialize
+#'   beta. It can be either "random" or "nmf". Please not that the
+#'   \code{\link{mmpca_clust}}() function also allow for a user given beta
+#'   matrix. In this case, this function is not used.
+#' @param dtm An object of class \code{\link[tm]{DocumentTermMatrix}}
+#' @param init.beta A string specifying the method, either \itemize{\item
+#'   'random': Initialization à la Blei et. al. with 1/V coefficient everywhere
+#'   + a small uniform noise U[0, 1e-10] on every coefficients. \item 'lda':
+#'   Recommanded. Uses the beta of LDA algorithm via tha CVEM algorithm, with an
+#'   initialization via 5 repeat of the gibbs sampling algorithm with 1000
+#'   burning iterations and 1000 iterations.  }
+#' @param K The number of topics (dimension of the latent space).
+#' @param verbose The verbosity level. Only prints a message at function
+#'   activation.
+#' @param control_lda_init The control for \code{\link[topimodels]{LDA}}(). Only
+#'   used when \code{init.beta} == 'lda'.
+#'
+#' @return A KxV matrix with each row summing to 1.
 initializeBeta = function(dtm, init.beta, K, verbose, control_lda_init) {
-  #' Function to calculate Beta on a given corpus
-  #' Several choices are available
-  #' @return a KxV matrix that which rows sums to 1
 
   V = dim(dtm)[2]
 
+  if (verbose > 0) cat('\n Init beta with the ', init.beta, ' method.\n')
   if (init.beta == 'random') {
 
-    if (verbose > 0) cat('\n Init beta randomly...')
     coefs = rep(1/V, K*V) + stats::runif(n = K*V, min = 0, max = 1e-10)
     coefs = matrix(coefs, nrow = K, ncol = V)
     beta.init = coefs / rowSums(coefs)
@@ -39,18 +51,8 @@ initializeBeta = function(dtm, init.beta, K, verbose, control_lda_init) {
                                 control = control_lda_init,
                                 model = lda.init.gibbs)
 
-    ## renormalize beta for underflows
+    ## exponentiate and renormalize beta (for underflows)
     beta.init = exp(lda.init@beta) / rowSums(exp(lda.init@beta))
-
-  } else if (init.beta == 'nmf') {
-    if (!requireNamespace("NMF", quietly = TRUE)) {
-      stop('Package NMF needed for this initialization function to work. Please install it.',
-           call. = FALSE)
-    }
-    ## Use NMF alogorithm of Lee and Seung. In parrallel if possible.
-    X.normalized = as.matrix(dtm) / apply(dtm, 1, function(x) sqrt(sum(x^2)))
-    res.nmf = NMF::nmf(x = t(X.normalized), method = 'lee', rank = K, nrun = 5, .opt = 'p')
-    beta.init = t(NMF::basis(res.nmf))
 
   } else {
     stop(paste0(init.beta, ' method is not currently implemented (check for typos).'))
@@ -62,28 +64,69 @@ initializeBeta = function(dtm, init.beta, K, verbose, control_lda_init) {
 ##****************************
 ## Initialize clustering
 
+#' @title Clustering initialization
+#' @description Perform a \code{DocumentTermMatrix} clustering via default
+#'   routines or allow for user specified function
+#'
+#' @param dtm An object of class \code{\link[tm]{DocumentTermMatrix}}
+#' @param Q The number of cluster
+#' @param K The dimension of the latent space. It is mandatory, for
+#'   compatibility reasons but not always used (e.g. random do not use it).
+#' @param init Either: \itemize{\item \code{'random'}: Random initilization.
+#'   \item \code{'kmeans_lda'}: A Q-kmeans on the latent space (theta matrix) of
+#'   a K-topic LDA.  \item A user defined function which MUST take the following
+#'   structure for compatibility \code{init <- function(dtm, Q, K, nruns, ...)}}
+#'
+#' @return A vector of size equal to the number of row of \code{dtm}, containing
+#'   a Q-clustering
+#' @details For more details see \code{\link{benchmarks-functions}}
+#' @export
+#'
+#' @examples
+#' simu = simulate_BBC(N = 100, L = 100)
+#' Q = 6
+#' K = 4
+#' Y = initialize_Y(simu$dtm.full, Q, K, init = 'kmeans_lda')
 initialize_Y <- function(dtm, Q, K, init='random'){
-  if (init == 'random') {
-    N = dim(dtm)[1]
-    Y = apply(rmultinom(N, 1, rep(1/Q, Q)), 2, which.max)
-    # check if #meta-docs < Q
-    while (length(unique(Y)) != Q) Y = apply(rmultinom(N, 1, rep(1/Q, Q)), 2, which.max)
-  } else if (init == 'HTSCluster') {
-    conds = 1:V
-    norm = rep(1,V)
-    run =  HTSCluster::PoisMixClus(as.matrix(dtm), g = Q, conds = conds, norm = norm, init.type = 'small-em')
-    Y = run$labels
-  } else if (init == 'nmf') {
-    Y = benchmark.nmf(dtm.full = dtm, Q = Q)
-  } else if (init == 'kmeans_lda') {
-    Y = benchmark.kmeans_lda(dtm.full = dtm, Q = Q, K = K)
-  } else if (init == 'gmm_lda') {
-    Y = benchmark.gmm_lda(dtm = dtm, Q = Q, K = K)
+
+  INIT_registry <- list(benchmark.kmeans_lda = c("kmeans_lda",
+                                                 "kmeans+lda",
+                                                 "kmeans.lda"),
+                        benchmark.random = c('random',
+                                             'rand'))
+
+  if (!is.function(init)) {
+    MATCH <- which(sapply(INIT_registry, function(x) length(grep(tolower(init), tolower(x)))) > 0)
+    if (!length(MATCH) == 1)
+      stop("'init'", init, "not specified correctly")
+    method <- get(names(INIT_registry)[MATCH])
   } else {
-    stop(paste0('Method ', init, ' is not implemented yet. Try supplying the clustering vector
-                to Yinit directly.'))
+    method <- init
   }
 
-  return(Y)
+  method(dtm = dtm, Q = Q, K = K, nruns = 1)
 }
+#   if (init == 'random') {
+#     N = dim(dtm)[1]
+#     Y = apply(rmultinom(N, 1, rep(1/Q, Q)), 2, which.max)
+#     # check if #meta-docs < Q
+#     while (length(unique(Y)) != Q) Y = apply(rmultinom(N, 1, rep(1/Q, Q)), 2, which.max)
+#   } else if (init == 'HTSCluster') {
+#     conds = 1:V
+#     norm = rep(1,V)
+#     run =  HTSCluster::PoisMixClus(as.matrix(dtm), g = Q, conds = conds, norm = norm, init.type = 'small-em')
+#     Y = run$labels
+#   } else if (init == 'nmf') {
+#     Y = benchmark.nmf(dtm.full = dtm, Q = Q)
+#   } else if (init == 'kmeans_lda') {
+#     Y = benchmark.kmeans_lda(dtm.full = dtm, Q = Q, K = K)
+#   } else if (init == 'gmm_lda') {
+#     Y = benchmark.gmm_lda(dtm = dtm, Q = Q, K = K)
+#   } else {
+#     stop(paste0('Method ', , ' is not implemented yet. Try supplying the clustering vector
+#                 to Yinit directly.'))
+#   }
+#
+#   return(Y)
+# }
 
