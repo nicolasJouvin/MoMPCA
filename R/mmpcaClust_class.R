@@ -1,5 +1,5 @@
 
-#' @include mmpcaClustcontrol.R
+#' @include mmpcaClustcontrol_class.R
 NULL
 
 
@@ -82,19 +82,4 @@ setMethod("show",
           )
 
 
-#' @export
-setMethod(f = "plot",
-          signature = signature('mmpcaClust', "missing"),
-          definition = function(x, type = "topics", ...) {
-            switch(type,
-                   "topics" = {
-                     plot_topics(res, ...)
-                     },
-                   "bound" = {
-                     plot_bound(res, ...)
-                   },
-                   stop('This plot type does not exists.')
-            )
-            }
-          )
 
