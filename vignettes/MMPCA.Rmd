@@ -41,8 +41,8 @@ data("BBCmsg")
 
 Start by generating data from the MMPCA model with a particular $\theta^\star$ and $\beta^\star$. For more detail, check experimental section of the paper.
 ```{r generate-data, echo=TRUE}
-N = 200
-L = 300
+N = 50
+L = 150
 simu <- simulate_BBC(N, L, epsilon = 0, lambda = 1)
 Ytruth <- simu$Ytruth
 ```
