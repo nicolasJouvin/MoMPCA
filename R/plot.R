@@ -1,4 +1,44 @@
-plot_topics <- function(res, ...) {
+#' @include mmpcaClust_class.R
+NULL
+
+
+#' @title Plot function for object mmpcaClust
+#' @description Use ggplot2 if available.
+#' @param res an S4 object of class \code{\linkS4class{mmpcaClust}}
+#' @param type Either: \itemize{\item 'topics' (default): Show the top topic
+#'   words of topic matrix. See \code{\link{plot_topics}} documention for more details. \item 'bound': plot the lower bound evolution during
+#'   the greedy procedure. See \code{\link{plot_bound}} documention for more details.}
+#' @param ... optional argument specifying the number of words to display and
+#'   the entropy correction to apply when calling \code{plot_topics}().
+#' @return a plot
+#' @export
+setMethod(f = "plot",
+          signature = signature('mmpcaClust', "missing"),
+          definition = function(x, type = "topics", ...) {
+            switch(type,
+                   "topics" = {
+                     plot_topics(x, ...)
+                   },
+                   "bound" = {
+                     plot_bound(x)
+                   },
+                   stop('This plot type does not exists.')
+            )
+          }
+)
+
+#' @title plot_topics
+#' @description Plot topic matrix
+#'
+#' @param res An S4 object of class \code{\linkS4class{mmpcaClust}}
+#' @param s an entropy correction parameter for the topic matrix. It is applied
+#'   to the beta matrix before sorting the words by highest probability. The
+#'   greater, the more emphasis is put towards words contributing a lot to the
+#'   entropy of a topic. Set s=1 to ignore.
+#' @param n_words the number of words to display per topic.
+#'
+#' @return a ggplot2 object
+plot_topics <- function(res, s=2, n_words = 10) {
 
   if (!requireNamespace("ggplot2", quietly = TRUE) ||
       !requireNamespace("dplyr", quietly = TRUE) ||
@@ -16,9 +56,9 @@ plot_topics <- function(res, ...) {
     return(spec)
   }
 
-  args <- list(...)
-  n_words <- if ("n_words" %in% names(args)) args$n_words else 10
-  s <- if ("s" %in% names(args)) args$s else 2
+  # args <- list(...)
+  # n_words <- if ("n_words" %in% names(args)) args$n_words else 10
+  # s <- if ("s" %in% names(args)) args$s else 2
 
   rep_topics <- tidytext::tidy(res@lda_algo, matrix = "beta")
 
@@ -46,8 +86,14 @@ plot_topics <- function(res, ...) {
   gg
 }
 
-
-plot_bound <- function(res, ...) {
+#' @title Bound evolution plot
+#' @description Plot lower bound evolution
+#'
+#' @param res An S4 object of class \code{\linkS4class{mmpcaClust}}
+#'
+#' @return a ggplot2 object if ggplot2 is available. Plot on the device
+#'   otherwise.
+plot_bound <- function(res) {
   if (is.null(res@logLikelihoods)) {
     stop("Bound evolution was not tracked, try restarting with the 'keep'
          argument set to a useful value.")
@@ -61,7 +107,7 @@ plot_bound <- function(res, ...) {
     df <- data.frame(iteration = seq(1, size, by = res@keep),
                    bound = res@logLikelihoods)
   } else {
-    df <- data.frame(iteration = head(seq(1, size, by = res@keep), -1),
+    df <- data.frame(iteration = utils::head(seq(1, size, by = res@keep), -1),
                      bound = res@logLikelihoods)
   }
 
