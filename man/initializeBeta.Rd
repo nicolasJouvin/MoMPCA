@@ -21,7 +21,7 @@ burning iterations and 1000 iterations.  }}
 \item{verbose}{The verbosity level. Only prints a message at function
 activation.}
 
-\item{control_lda_init}{The control for \code{\link[topimodels]{LDA}}(). Only
+\item{control_lda_init}{The control for \code{\link[topicmodels]{LDA}}(). Only
 used when \code{init.beta} == 'lda'.}
 }
 \value{

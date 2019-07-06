@@ -14,7 +14,7 @@
 #' @param K The number of topics (dimension of the latent space).
 #' @param verbose The verbosity level. Only prints a message at function
 #'   activation.
-#' @param control_lda_init The control for \code{\link[topimodels]{LDA}}(). Only
+#' @param control_lda_init The control for \code{\link[topicmodels]{LDA}}(). Only
 #'   used when \code{init.beta} == 'lda'.
 #'
 #' @return A KxV matrix with each row summing to 1.
