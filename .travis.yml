@@ -23,6 +23,5 @@ addons:
   apt:
     packages:
      - ccache
-     - libgsl0-dev
      - libgsl-dev
      - gsl-bin
