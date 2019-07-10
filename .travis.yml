@@ -3,3 +3,12 @@ r:
   - oldrel
   - release
   - devel
+before_script: export NOT_CRAN=false
+# better caching for Travis
+# See : https://pjs-web.de/post/using-ccache-to-speed-up-r-package-checks-on-travis-ci/
+cache:
+  - ccache
+addons:
+  apt:
+    packages:
+     - ccache
