@@ -1,10 +1,13 @@
+## For CRAN check ...
+## https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when/12429344#12429344
+utils::globalVariables(names = c('term', 'topic'))
+
 #' @include mmpcaClust_class.R
 NULL
 
-
 #' @title Plot function for object mmpcaClust
 #' @description Use ggplot2 if available.
-#' @param res an S4 object of class \code{\linkS4class{mmpcaClust}}
+#' @param x an S4 object of class \code{\linkS4class{mmpcaClust}}
 #' @param type Either: \itemize{\item 'topics' (default): Show the top topic
 #'   words of topic matrix. See \code{\link{plot_topics}} documention for more details. \item 'bound': plot the lower bound evolution during
 #'   the greedy procedure. See \code{\link{plot_bound}} documention for more details.}
@@ -64,22 +67,23 @@ plot_topics <- function(res, s=2, n_words = 10) {
 
   # entropic smoothing of topic probability
   rep_topics_cor = rep_topics %>%
-    dplyr::group_by(term) %>%
+    dplyr::group_by(`term`) %>%
     dplyr::mutate(beta = entropy_corection_lda(beta, s)) %>%
     dplyr::ungroup()
 
 
   rep_top_terms <- rep_topics_cor %>%
-    dplyr::group_by(topic) %>%
+    dplyr::group_by(`topic`) %>%
     dplyr::top_n(n = n_words, beta) %>%
     dplyr::ungroup() %>%
-    dplyr::arrange(topic, -beta)
+    dplyr::arrange(`topic`, -beta)
 
+  fill_ggplot <- factor(rep_top_terms$topic)
   gg = rep_top_terms  %>%
-    dplyr::mutate(term = stats::reorder(term, beta)) %>%
-    ggplot2::ggplot(ggplot2::aes(term, beta, fill = factor(topic))) +
+    dplyr::mutate(term = stats::reorder(`term`, beta)) %>%
+    ggplot2::ggplot(ggplot2::aes(`term`, `beta`, fill = fill_ggplot)) +
     ggplot2::geom_col(show.legend = FALSE) +
-    ggplot2::facet_wrap(~ topic, scales = "free") +
+    ggplot2::facet_wrap(~ `topic`, scales = "free") +
     ggplot2::coord_flip() +
     ggplot2::ylab("Topic matrix")
 
@@ -112,7 +116,8 @@ plot_bound <- function(res) {
   }
 
   if (requireNamespace("ggplot2", quietly = TRUE)) {
-    gg <- ggplot2::ggplot(df, ggplot2::aes(x = iteration, y = bound)) +
+    gg <- df %>%
+      ggplot2::ggplot(ggplot2::aes_string(x = 'iteration', y = 'bound')) +
       ggplot2::geom_point(size = 0.6) +
       ggplot2::geom_hline( yintercept = max(df$bound), show.legend = T,
                            col = 'red', alpha = 0.5) +
