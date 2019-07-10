@@ -8,6 +8,7 @@ test_that('Check init_Y w/ random', code = {
   expect_length(unique(Y), Q)
 })
 
+testthat::skip_on_cran()
 test_that("Check init_Y w/ kmeans_lda", code = {
   Y = initialize_Y(simu$dtm.full, Q, K, init = 'kmeans_lda')
   expect_length(unique(Y), Q)
