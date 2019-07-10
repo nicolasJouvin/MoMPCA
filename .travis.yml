@@ -25,3 +25,4 @@ addons:
   apt:
     packages:
      - ccache
+     - libgsl0-dev
