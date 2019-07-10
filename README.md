@@ -1,5 +1,5 @@
   <!-- badges: start -->
-  [![Travis build status](https://travis-ci.org/nicolasJouvin/tests_mLDA.svg?branch=master)](https://travis-ci.org/nicolasJouvin/tests_mLDA)
+  [![Travis build status](https://travis-ci.org/nicolasJouvin/MMPCA.svg?branch=master)](https://travis-ci.org/nicolasJouvin/MMPCA)
   <!-- badges: end -->
 
 # MMPCA : An R package for count data clustering
