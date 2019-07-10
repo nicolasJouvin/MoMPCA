@@ -2,7 +2,7 @@
 % Please edit documentation in R/branch_and_bound_cvem.R
 \name{mmpca_clust}
 \alias{mmpca_clust}
-\title{Perform clustering of count data using the MMPCA model.}
+\title{Greedy procedures for joint inference and clustering in MMPCA}
 \usage{
 mmpca_clust(dtm, Q, K, model = NULL, Yinit = "random",
   method = "CVEM", init.beta = "lda", keep = 1L, max.epochs = 100L,

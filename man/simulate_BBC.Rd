@@ -40,5 +40,4 @@ simu <- simulate_BBC(N = 300, L = 400, epsilon = 0, lambda = 1)
 dtm <- simu$dtm.full
 Ytruth <- simu$Ytruth
 
-
 }

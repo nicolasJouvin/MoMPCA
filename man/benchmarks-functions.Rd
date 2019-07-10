@@ -15,6 +15,9 @@ benchmark.kmeans_lda(dtm, Q, K, nruns = 1, ...)
 
 \item{Q}{The number of clusters}
 
+\item{...}{Some argument to be consistent with the function's skeleton :
+\code{K} and \code{nruns} are optional arguments for some of them.}
+
 \item{K}{Number of topics (dimension of the latent space).}
 
 \item{nruns}{Number of restart of the \code{\link[stats]{kmeans}}()
