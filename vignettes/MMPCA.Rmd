@@ -3,8 +3,8 @@ title: "MMPCA - A package for the clustering of count data"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MMPCA}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::knitr}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r}
@@ -41,7 +41,7 @@ data("BBCmsg")
 
 Start by generating data from the MMPCA model with a particular $\theta^\star$ and $\beta^\star$. For more detail, check experimental section of the paper.
 ```{r generate-data, echo=TRUE}
-N = 200
+N = 10
 L = 300
 simu <- simulate_BBC(N, L, epsilon = 0, lambda = 1)
 Ytruth <- simu$Ytruth
