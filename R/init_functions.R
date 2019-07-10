@@ -106,27 +106,4 @@ initialize_Y <- function(dtm, Q, K, init='random'){
 
   method(dtm = dtm, Q = Q, K = K, nruns = 1)
 }
-#   if (init == 'random') {
-#     N = dim(dtm)[1]
-#     Y = apply(rmultinom(N, 1, rep(1/Q, Q)), 2, which.max)
-#     # check if #meta-docs < Q
-#     while (length(unique(Y)) != Q) Y = apply(rmultinom(N, 1, rep(1/Q, Q)), 2, which.max)
-#   } else if (init == 'HTSCluster') {
-#     conds = 1:V
-#     norm = rep(1,V)
-#     run =  HTSCluster::PoisMixClus(as.matrix(dtm), g = Q, conds = conds, norm = norm, init.type = 'small-em')
-#     Y = run$labels
-#   } else if (init == 'nmf') {
-#     Y = benchmark.nmf(dtm.full = dtm, Q = Q)
-#   } else if (init == 'kmeans_lda') {
-#     Y = benchmark.kmeans_lda(dtm.full = dtm, Q = Q, K = K)
-#   } else if (init == 'gmm_lda') {
-#     Y = benchmark.gmm_lda(dtm = dtm, Q = Q, K = K)
-#   } else {
-#     stop(paste0('Method ', , ' is not implemented yet. Try supplying the clustering vector
-#                 to Yinit directly.'))
-#   }
-#
-#   return(Y)
-# }
 
