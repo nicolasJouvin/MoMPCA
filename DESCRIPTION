@@ -1,12 +1,13 @@
 Package: MMPCA
 Type: Package
-Title: Implements the Branch & Bound C-VEM for mixture of multinomial PCA (Title Case)
-Version: 0.1.0
+Title: Inference and Clustering for Mixture of Multinomial PCA
+Version: 1.0.0
 Author: Nicolas Jouvin
-Maintainer: The package maintainer <nicolas.jouvin@univ-paris1.fr>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Maintainer: Nicolas Jouvin <nicolas.jouvin@univ-paris1.fr>
+Description: Cluster any count data matrix in the format of a 
+    DocumentTermMatrix. Currently only the banch and bound C-VEM is implemented. 
+    But soon the simple greedy procedures will be added.  
+License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.4.4)
@@ -17,7 +18,8 @@ Imports:
     Matrix,
     slam,
     magrittr,
-    dplyr
+    dplyr,
+    stats
 Suggests: 
     testthat (>= 2.1.0),
     knitr,
