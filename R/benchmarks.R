@@ -7,6 +7,8 @@
 #' @param K Number of topics (dimension of the latent space).
 #' @param nruns Number of restart of the \code{\link[stats]{kmeans}}()
 #'   algorithm.
+#' @param ... Some argument to be consistent with the function's skeleton :
+#'   \code{K} and \code{nruns} are optional arguments for some of them.
 #' @return A vector of size equal to the number of row of \code{dtm}, containing
 #'   a Q-clustering
 #' @rdname benchmarks-functions
@@ -19,10 +21,10 @@ NULL
 #' @export
 benchmark.random <- function(dtm, Q, ...) {
   N = dim(dtm)[1]
-  Y = apply(rmultinom(N, 1, rep(1/Q, Q)), 2, which.max)
+  Y = apply(stats::rmultinom(N, 1, rep(1/Q, Q)), 2, which.max)
   # check if #meta-docs < Q
   while (length(unique(Y)) != Q)
-    Y = apply(rmultinom(N, 1, rep(1/Q, Q)), 2, which.max)
+    Y = apply(stats::rmultinom(N, 1, rep(1/Q, Q)), 2, which.max)
   Y
 }
 

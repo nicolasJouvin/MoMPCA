@@ -21,7 +21,7 @@ setClass(Class = "mmpcaClustcontrol",
 init_mmpca_control = function(.Object, control_lda_init, control_lda_loop, ...) {
 
   if (missing(control_lda_init)) {
-    control_lda_init <- new("LDA_VEMcontrol",
+    control_lda_init <- methods::new("LDA_VEMcontrol",
                             estimate.alpha = FALSE,
                             estimate.beta = TRUE,
                             alpha = 1,
@@ -31,15 +31,15 @@ init_mmpca_control = function(.Object, control_lda_init, control_lda_loop, ...) 
   }
 
   if (missing(control_lda_loop)) {
-    control_lda_loop <- new("LDA_VEMcontrol",
+    control_lda_loop <- methods::new("LDA_VEMcontrol",
                             estimate.alpha = FALSE,
                             alpha = 1,
                             estimate.beta = FALSE,
                             initialize = "model",
                             nstart = 1L,
                             verbose = 0L,
-                            var = new('OPTcontrol', iter.max = 1e8L, tol = 1e-9),
-                            em = new('OPTcontrol', iter.max = 100L, tol = 1e-4)
+                            var = methods::new('OPTcontrol', iter.max = 1e8L, tol = 1e-9),
+                            em = methods::new('OPTcontrol', iter.max = 100L, tol = 1e-4)
     )
   }
 

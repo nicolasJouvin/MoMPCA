@@ -50,7 +50,7 @@ mmpca_clust <- function(dtm,
 
   mycall = match.call()
   if (is.null(model)) {
-    model <- new("mmpcaClust")
+    model <- methods::new("mmpcaClust")
   }
 
   control_lda_init = model@controls@control_lda_init
@@ -320,7 +320,7 @@ mmpca_clust <- function(dtm,
   # Compute ICL
   icl <- final_bound - ((K * (V - 1))) - (Q - 1) - Q * (K - 1)
 
-  res <- new("mmpcaClust",
+  res <- methods::new("mmpcaClust",
             call = mycall,
             method = method,
             Yinit = Yinit,

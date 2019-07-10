@@ -28,11 +28,10 @@
 #' dtm <- simu$dtm.full
 #' Ytruth <- simu$Ytruth
 #'
-#'
-
 simulate_BBC = function(N, L, epsilon = 0, lambda=1, theta_true = NULL){
   Q = 6
   K = 4
+  BBCmsg <- MMPCA::BBCmsg
 
   if (is.null(theta_true)) {
     theta_true = matrix(0.17, Q, K)
@@ -56,7 +55,7 @@ simulate_BBC = function(N, L, epsilon = 0, lambda=1, theta_true = NULL){
 
   all.clust.present = F
   while (!all.clust.present) {
-    Ytruth = apply(rmultinom(N, 1, Pi), 2, which.max)
+    Ytruth = apply(stats::rmultinom(N, 1, Pi), 2, which.max)
     if (length(unique(Ytruth)) == Q) all.clust.present = T
   }
 
@@ -68,9 +67,9 @@ simulate_BBC = function(N, L, epsilon = 0, lambda=1, theta_true = NULL){
     doc[[d]] = ""
     for (n in 1:L[d]) {
 
-      test = 1 - rbinom(1, 1, epsilon)
+      test = 1 - stats::rbinom(1, 1, epsilon)
       if (test == 1) {
-        Zd = which.max(rmultinom(1, 1, theta_true[Ytruth[d], ]))
+        Zd = which.max(stats::rmultinom(1, 1, theta_true[Ytruth[d], ]))
       }
       else {
         Zd = sample(1:K, 1)
