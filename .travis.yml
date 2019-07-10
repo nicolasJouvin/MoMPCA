@@ -1,15 +1,19 @@
 language: r
 r:
-  - oldrel
   - release
   - devel
+
+os:
+  - linux
+  - osx
+  - windows
 
 #######################################
 # install gsl-devel for topicmodels
 #######################################
 before_script:
   - export NOT_CRAN=false
-  - sudo apt-get install libgsl0-dev
+  - sudo apt-get install gsl-bin libgsl0-dev libgsl-dev
 
 ############################
 # better caching for Travis
