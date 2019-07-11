@@ -14,10 +14,12 @@ matrix:
     apt_packages:
      - libgsl-dev
      - gsl-bin
-  - r: devel
-    os: osx
-    osx_image: xcode10.2
-    brew_packages: gsl
+# Pb with devel version not found with curl; see
+#https://travis-ci.community/t/r-development-version-3-7-does-not-work-for-mac/4074
+#  - r: devel
+#    os: osx
+#    osx_image: xcode10.2
+#    brew_packages: gsl
   - r: release
     os: linux
     dist: trusty
