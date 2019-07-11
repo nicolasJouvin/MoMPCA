@@ -1,7 +1,4 @@
 language: r
-r:
-  - release
-  - devel
 
 r_check_args: '--as-cran'
 warnings_are_errors: true
@@ -14,11 +11,17 @@ matrix:
        - ccache
        - libgsl-dev
        - gsl-bin
+    r:
+      - release
+      - devel
   - os: osx
     osx_image: xcode7.3 # close from CRAN
     brew_packages:
       - gsl
       - ccache
+    r:
+      - release
+      - devel
 
 ############################
 # better caching for Travis
