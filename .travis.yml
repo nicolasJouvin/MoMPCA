@@ -1,18 +1,28 @@
 language: r
 r:
-  - oldrel
   - release
   - devel
 
 os:
   - linux
+  - osx
 
-#######################################
-# install gsl-devel for topicmodels
-#######################################
-before_script:
-  - export NOT_CRAN=false
-# not working :  - sudo apt-get install gsl-bin libgsl0-dev libgsl-dev
+r_check_args: '--as-cran'
+warnings_are_errors: true
+
+matrix:
+  include:
+  - os: linux
+    dist: trusty
+    apt_packages:
+       - ccache
+       - libgsl-dev
+       - gsl-bin
+  - os: osx
+    osx_image: xcode7.3 # close from CRAN
+    brew_packages:
+      - gsl
+      - ccache
 
 ############################
 # better caching for Travis
@@ -20,9 +30,4 @@ before_script:
 ###########################
 cache:
   - ccache
-addons:
-  apt:
-    packages:
-     - ccache
-     - libgsl-dev
-     - gsl-bin
+
