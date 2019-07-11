@@ -4,12 +4,12 @@
 #' @param dtm an NxV \code{\link[tm]{DocumentTermMatrix}} with term-frequency
 #'   weighting.
 #' @param Q The number of clusters
-#' @param K The numer of topics (latent space dimension)
+#' @param K The number of topics (latent space dimension)
 #' @param model A given model in which to take the controls for the VE-steps in
 #'   the greedy procedure. If NULL, a model of class \code{\linkS4class{mmpcaClust}} is
 #'   created with default controls (see \code{\linkS4class{mmpcaClustcontrol}}
 #'   class for more details).
-#' @param Yinit Parameter for the initialization of Y. Tt can be either:
+#' @param Yinit Parameter for the initialization of Y. It can be either:
 #'   \itemize{ \item a string or a function specifying the initialization
 #'   procedure. It should be one of ('random', 'kmeans_lda'). See
 #'   \code{\link{benchmarks-functions}} functions for more details. \item A

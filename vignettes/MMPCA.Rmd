@@ -26,7 +26,7 @@ library(aricode)
 
 ## Description
 
-MMPCA is a package to perform clustering of count data based on the *mixture of mutinomial PCA* model. It integrates a dimension reduction aspect by factorizing the multinomial parameters in a latent space, like *Latent Dirichlet Allocation* of Blei et. al.
+MMPCA is a package to perform clustering of count data based on the *mixture of multinomial PCA* model. It integrates a dimension reduction aspect by factorizing the multinomial parameters in a latent space, like *Latent Dirichlet Allocation* of Blei et. al.
 
 ## Dataset
 

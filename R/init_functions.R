@@ -6,10 +6,10 @@
 #'   matrix. In this case, this function is not used.
 #' @param dtm An object of class \code{\link[tm]{DocumentTermMatrix}}
 #' @param init.beta A string specifying the method, either \itemize{\item
-#'   'random': Initialization à la Blei et. al. with 1/V coefficient everywhere
+#'   'random': Initialization a la Blei et. al. with 1/V coefficient everywhere
 #'   + a small uniform noise U[0, 1e-10] on every coefficients. \item 'lda':
-#'   Recommanded. Uses the beta of LDA algorithm via tha CVEM algorithm, with an
-#'   initialization via 5 repeat of the gibbs sampling algorithm with 1000
+#'   Recommended. Uses the beta of LDA algorithm via a VEM algorithm, with an
+#'   initialization of 5 repeats of the gibbs sampling algorithm with 1000
 #'   burning iterations and 1000 iterations.  }
 #' @param K The number of topics (dimension of the latent space).
 #' @param verbose The verbosity level. Only prints a message at function
@@ -72,7 +72,7 @@ initializeBeta = function(dtm, init.beta, K, verbose, control_lda_init) {
 #' @param Q The number of cluster
 #' @param K The dimension of the latent space. It is mandatory, for
 #'   compatibility reasons but not always used (e.g. random do not use it).
-#' @param init Either: \itemize{\item \code{'random'}: Random initilization.
+#' @param init Either: \itemize{\item \code{'random'}: Random initialization.
 #'   \item \code{'kmeans_lda'}: A Q-kmeans on the latent space (theta matrix) of
 #'   a K-topic LDA.  \item A user defined function which MUST take the following
 #'   structure for compatibility \code{init <- function(dtm, Q, K, nruns, ...)}}

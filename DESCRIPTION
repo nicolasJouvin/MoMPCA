@@ -5,7 +5,7 @@ Version: 1.0.0
 Author: Nicolas Jouvin
 Maintainer: Nicolas Jouvin <nicolas.jouvin@univ-paris1.fr>
 Description: Cluster any count data matrix in the format of a 
-    DocumentTermMatrix. Currently only the banch and bound C-VEM is implemented. 
+    DocumentTermMatrix. Currently only the branch and bound C-VEM is implemented. 
     But soon the simple greedy procedures will be added.  
 License: GPL-3 | file LICENSE
 Encoding: UTF-8

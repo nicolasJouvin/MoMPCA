@@ -1,6 +1,6 @@
 #' BBC articles
 #'
-#' Pre-procecessed BBC articles from the BBC news network.
+#' Pre-processed BBC articles from the BBC news network.
 #' @docType data
 #'
 #' @usage data("BBCmsg")
