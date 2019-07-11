@@ -3,10 +3,6 @@ r:
   - release
   - devel
 
-os:
-  - linux
-  - osx
-
 r_check_args: '--as-cran'
 warnings_are_errors: true
 
