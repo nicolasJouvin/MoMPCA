@@ -14,7 +14,7 @@ initialize_Y(dtm, Q, K, init = "random")
 \item{K}{The dimension of the latent space. It is mandatory, for
 compatibility reasons but not always used (e.g. random do not use it).}
 
-\item{init}{Either: \itemize{\item \code{'random'}: Random initilization.
+\item{init}{Either: \itemize{\item \code{'random'}: Random initialization.
 \item \code{'kmeans_lda'}: A Q-kmeans on the latent space (theta matrix) of
 a K-topic LDA.  \item A user defined function which MUST take the following
 structure for compatibility \code{init <- function(dtm, Q, K, nruns, ...)}}}

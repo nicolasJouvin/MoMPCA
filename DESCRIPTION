@@ -4,9 +4,9 @@ Title: Inference and Clustering for Mixture of Multinomial PCA
 Version: 1.0.0
 Author: Nicolas Jouvin
 Maintainer: Nicolas Jouvin <nicolas.jouvin@univ-paris1.fr>
-Description: Cluster any count data matrix in the format of a 
-    DocumentTermMatrix. Currently only the branch and bound C-VEM is implemented. 
-    But soon the simple greedy procedures will be added.  
+Description: Cluster any count data matrix with a fixed number of variables. 
+    Currently only the branch and bound Classification Variational Expectation 
+    Maximisation is implemented. 
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true

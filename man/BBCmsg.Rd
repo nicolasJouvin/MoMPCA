@@ -16,6 +16,6 @@
 data("BBCmsg")
 }
 \description{
-Pre-procecessed BBC articles from the BBC news network.
+Pre-processed BBC articles from the BBC news network.
 }
 \keyword{datasets}

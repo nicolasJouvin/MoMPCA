@@ -10,10 +10,10 @@ initializeBeta(dtm, init.beta, K, verbose, control_lda_init)
 \item{dtm}{An object of class \code{\link[tm]{DocumentTermMatrix}}}
 
 \item{init.beta}{A string specifying the method, either \itemize{\item
-'random': Initialization à la Blei et. al. with 1/V coefficient everywhere
+'random': Initialization a la Blei et. al. with 1/V coefficient everywhere
 + a small uniform noise U[0, 1e-10] on every coefficients. \item 'lda':
-Recommanded. Uses the beta of LDA algorithm via tha CVEM algorithm, with an
-initialization via 5 repeat of the gibbs sampling algorithm with 1000
+Recommended. Uses the beta of LDA algorithm via a VEM algorithm, with an
+initialization of 5 repeats of the gibbs sampling algorithm with 1000
 burning iterations and 1000 iterations.  }}
 
 \item{K}{The number of topics (dimension of the latent space).}

@@ -14,14 +14,14 @@ weighting.}
 
 \item{Q}{The number of clusters}
 
-\item{K}{The numer of topics (latent space dimension)}
+\item{K}{The number of topics (latent space dimension)}
 
 \item{model}{A given model in which to take the controls for the VE-steps in
 the greedy procedure. If NULL, a model of class \code{\linkS4class{mmpcaClust}} is
 created with default controls (see \code{\linkS4class{mmpcaClustcontrol}}
 class for more details).}
 
-\item{Yinit}{Parameter for the initialization of Y. Tt can be either:
+\item{Yinit}{Parameter for the initialization of Y. It can be either:
 \itemize{ \item a string or a function specifying the initialization
 procedure. It should be one of ('random', 'kmeans_lda'). See
 \code{\link{benchmarks-functions}} functions for more details. \item A

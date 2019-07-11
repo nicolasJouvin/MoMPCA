@@ -11,7 +11,7 @@
 \item{x}{an S4 object of class \code{\linkS4class{mmpcaClust}}}
 
 \item{type}{Either: \itemize{\item 'topics' (default): Show the top topic
-words of topic matrix. See \code{\link{plot_topics}} documention for more details. \item 'bound': plot the lower bound evolution during
+words of topic matrix. See \code{\link{plot_topics}} documentation for more details. \item 'bound': plot the lower bound evolution during
 the greedy procedure. See \code{\link{plot_bound}} documention for more details.}}
 
 \item{...}{optional argument specifying the number of words to display and

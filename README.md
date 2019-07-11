@@ -6,7 +6,6 @@
 
 ## Inference and Clustering for Mixture of Multinomial PCA
 
-Cluster any count data matrix in the format of a DocumentTermMatrix. 
-Currently only the branch and bound C-VEM is implemented. But soon the simple 
-greedy procedures will be added.  
-
+Cluster any count data matrix with a fixed number of variables. Currently only 
+the branch and bound Classification-Variational Expectation-Maximisation is 
+implemented. 
