@@ -83,10 +83,12 @@ initializeBeta = function(dtm, init.beta, K, verbose, control_lda_init) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' simu = simulate_BBC(N = 100, L = 100)
 #' Q = 6
 #' K = 4
 #' Y = initialize_Y(simu$dtm.full, Q, K, init = 'kmeans_lda')
+#' }
 initialize_Y <- function(dtm, Q, K, init='random'){
 
   INIT_registry <- list(benchmark.kmeans_lda = c("kmeans_lda",
