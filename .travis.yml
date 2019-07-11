@@ -1,32 +1,43 @@
 language: r
+cache: packages
 
 r_check_args: '--as-cran'
 warnings_are_errors: true
 
+
+# build matrix
 matrix:
   include:
-  - os: linux
+  - r: devel
+    os: linux
     dist: trusty
     apt_packages:
-       - ccache
-       - libgsl-dev
-       - gsl-bin
-    r:
-      - release
-      - devel
-  - os: osx
-    osx_image: xcode7.3 # close from CRAN
-    brew_packages:
-      - gsl
-      - ccache
-    r:
-      - release
-      - devel
+     - libgsl-dev
+     - gsl-bin
+  - r: devel
+    os: osx
+    osx_image: xcode10.2
+    brew_packages: gsl
+  - r: release
+    os: linux
+    dist: trusty
+    apt_packages:
+     - libgsl-dev
+     - gsl-bin
+  - r: release
+    os: osx
+    osx_image: xcode10.2
+    brew_packages: gsl
+
+
+before_install:
+  - Rscript -e 'update.packages(ask = FALSE)'
+
 
 ############################
 # better caching for Travis
 # See : https://pjs-web.de/post/using-ccache-to-speed-up-r-package-checks-on-travis-ci/
 ###########################
-cache:
-  - ccache
+#cache:
+#  - ccache
 
