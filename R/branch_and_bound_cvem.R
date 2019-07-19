@@ -120,14 +120,12 @@ mmpca_clust <- function(dtm,
         identical(Matrix::rowSums(init.beta), rep(1, K))) {
       stop('init.beta must be a KxV matrix which rows sums to 1.')
     }
-
-    if (verbose > 0) cat('Beta initialisation with a user given beta.\n')
+    if (verbose > 0) message('Beta initialisation with a user given beta.')
     lda_init@beta = log(init.beta)
   } else if (is.character(init.beta) && length(init.beta) == 1) {
-    if (verbose > 0) cat('Beta initialisation with ',init.beta, '...\n')
     beta.init = initializeBeta(dtm, init.beta, K, verbose, control_lda_init)
     lda_init@beta = log(beta.init)
-    if (verbose > 0) cat('... Finished. \n')
+    if (verbose > 0) message('... Finished. ')
   } else {
     stop('init.beta argument must be a matrix or a string specifying
          the initialization method for beta.')
@@ -181,11 +179,11 @@ mmpca_clust <- function(dtm,
   ## stock the evolution of the bound every keep iterations
   bounds = c()
 
-  if (verbose > 1) cat(' ---- Begin B&B on ', N, ' documents. ----\n')
+  if (verbose > 1) message(' ---- Begin B&B on ', N, ' documents. ----')
   for (epoch in 1:max.epochs) {
 
     if (verbose > 1) {
-      cat('\n ---------- Epoch number ', epoch, ' : \n ')
+      message(' ---------- Epoch number ', epoch, ' :  ')
     }
 
     # M-step on $\pi$.
@@ -270,7 +268,7 @@ mmpca_clust <- function(dtm,
           }
         }
       }else{
-        if (verbose > 0) cat('\n Can\'t swap observation ', d, ' !\n')
+        if (verbose > 1) message(' Can\'t swap observation ', d, ' !')
       }
 
       ite_cpt = ite_cpt + 1

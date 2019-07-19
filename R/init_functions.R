@@ -18,11 +18,19 @@
 #'   used when \code{init.beta} == 'lda'.
 #'
 #' @return A KxV matrix with each row summing to 1.
-initializeBeta = function(dtm, init.beta, K, verbose, control_lda_init) {
+#' \donttest{
+#' simu = simulate_BBC(N = 100, L = 100)
+#' Q = 6
+#' K = 4
+#' beta = initializeBeta(simu$dtm.full, 'lda', K, verbose = 1)
+#' }
+initializeBeta = function(dtm, init.beta, K,
+                          verbose = 0,
+                          control_lda_init = NULL) {
 
   V = dim(dtm)[2]
 
-  if (verbose > 0) cat('\n Init beta with the ', init.beta, ' method.\n')
+  if (verbose > 0) message('Init beta with the ', init.beta, ' method...')
   if (init.beta == 'random') {
 
     coefs = rep(1/V, K*V) + stats::runif(n = K*V, min = 0, max = 1e-10)
@@ -31,6 +39,9 @@ initializeBeta = function(dtm, init.beta, K, verbose, control_lda_init) {
 
   } else if (init.beta == 'lda') {
     ## Combination of Gibbs sampling + VEM to find the best beta
+    if (is.null(control_lda_init))
+      control_lda_init = methods::new("LDA_VEMcontrol")
+
     # 1. Gibbs
     nstart.gibbs = 5
     seed.gibbs  = rep(NA, nstart.gibbs) # See ?TopicModelcontrol-class --> seed field explanation
@@ -83,7 +94,7 @@ initializeBeta = function(dtm, init.beta, K, verbose, control_lda_init) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' simu = simulate_BBC(N = 100, L = 100)
 #' Q = 6
 #' K = 4
