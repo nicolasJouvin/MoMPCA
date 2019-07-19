@@ -31,7 +31,7 @@ Perform a \code{DocumentTermMatrix} clustering via default
 For more details see \code{\link{benchmarks-functions}}
 }
 \examples{
-\dontrun{
+\donttest{
 simu = simulate_BBC(N = 100, L = 100)
 Q = 6
 K = 4

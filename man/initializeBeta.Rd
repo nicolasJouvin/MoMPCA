@@ -4,7 +4,7 @@
 \alias{initializeBeta}
 \title{Beta initialization}
 \usage{
-initializeBeta(dtm, init.beta, K, verbose, control_lda_init)
+initializeBeta(dtm, init.beta, K, verbose = 0, control_lda_init = NULL)
 }
 \arguments{
 \item{dtm}{An object of class \code{\link[tm]{DocumentTermMatrix}}}
@@ -21,8 +21,10 @@ burning iterations and 1000 iterations.  }}
 \item{verbose}{The verbosity level. Only prints a message at function
 activation.}
 
-\item{control_lda_init}{The control for \code{\link[topicmodels]{LDA}}(). Only
-used when \code{init.beta} == 'lda'.}
+\item{control_lda_init}{The control for \code{\link[topicmodels]{LDA}}().
+Only used when \code{init.beta} == 'lda' and initilialized to the default
+\code{"LDA_VEMcontrol"} of the \code{\linkS4class{TopicModelcontrol}}
+class.}
 }
 \value{
 A KxV matrix with each row summing to 1.
@@ -32,4 +34,12 @@ Used in the \code{\link{mmpca_clust}}() function to initialize
   beta. It can be either "random" or "nmf". Please not that the
   \code{\link{mmpca_clust}}() function also allow for a user given beta
   matrix. In this case, this function is not used.
+}
+\examples{
+\donttest{
+simu = simulate_BBC(N = 100, L = 100)
+Q = 6
+K = 4
+beta = initializeBeta(simu$dtm.full, 'lda', K, verbose = 1)
+}
 }
