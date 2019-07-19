@@ -1,12 +1,10 @@
 Package: MMPCA
 Type: Package
-Title: Inference and Clustering for Mixture of Multinomial PCA
+Title: Inference and Clustering for Mixture of Multinomial Principal Component Analysis
 Version: 1.0.0
 Author: Nicolas Jouvin
 Maintainer: Nicolas Jouvin <nicolas.jouvin@univ-paris1.fr>
-Description: Cluster any count data matrix with a fixed number of variables. 
-    Currently only the branch and bound Classification Variational Expectation 
-    Maximisation is implemented. 
+Description: Cluster any count data matrix with a fixed number of variables. It integrate
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
