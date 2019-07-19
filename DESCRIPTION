@@ -7,7 +7,7 @@ Maintainer: Nicolas Jouvin <nicolas.jouvin@univ-paris1.fr>
 Description: Cluster any count data matrix with a fixed number of variables. 
     Currently only the branch and bound Classification Variational Expectation 
     Maximisation is implemented. 
-License: GPL-3 | file LICENSE
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.4.0)
