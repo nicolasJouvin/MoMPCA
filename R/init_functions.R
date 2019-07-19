@@ -14,10 +14,13 @@
 #' @param K The number of topics (dimension of the latent space).
 #' @param verbose The verbosity level. Only prints a message at function
 #'   activation.
-#' @param control_lda_init The control for \code{\link[topicmodels]{LDA}}(). Only
-#'   used when \code{init.beta} == 'lda'.
+#' @param control_lda_init The control for \code{\link[topicmodels]{LDA}}().
+#'   Only used when \code{init.beta} == 'lda' and initilialized to the default
+#'   \code{"LDA_VEMcontrol"} of the \code{\linkS4class{TopicModelcontrol}}
+#'   class.
 #'
 #' @return A KxV matrix with each row summing to 1.
+#' @examples
 #' \donttest{
 #' simu = simulate_BBC(N = 100, L = 100)
 #' Q = 6
