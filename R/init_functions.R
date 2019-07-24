@@ -72,7 +72,8 @@ initializeBeta = function(dtm, init.beta, K,
     stop(paste0(init.beta, ' method is not currently implemented (check for typos).'))
   }
 
-  return(beta.init)
+  if (verbose > 0) message('... Finished. ')
+  beta.init
 }
 
 ##****************************

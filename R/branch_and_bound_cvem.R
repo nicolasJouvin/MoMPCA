@@ -125,7 +125,6 @@ mmpca_clust <- function(dtm,
   } else if (is.character(init.beta) && length(init.beta) == 1) {
     beta.init = initializeBeta(dtm, init.beta, K, verbose, control_lda_init)
     lda_init@beta = log(beta.init)
-    if (verbose > 0) message('... Finished. ')
   } else {
     stop('init.beta argument must be a matrix or a string specifying
          the initialization method for beta.')
