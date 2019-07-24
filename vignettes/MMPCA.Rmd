@@ -54,7 +54,7 @@ t0 <- system.time(res <- mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                           method = 'CVEM',
                           max.epochs = 10,
                           keep = 1,
-                          verbose = 1)
+                          verbose = 2)
                )
 print(t0)
 ```
