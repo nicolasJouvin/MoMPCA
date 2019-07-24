@@ -42,19 +42,21 @@ data("BBCmsg")
 Start by generating data from the MMPCA model with a particular $\theta^\star$ and $\beta^\star$. For more detail, check experimental section of the paper.
 ```{r generate-data, echo=TRUE}
 N = 10
-L = 300
+L = 10
 simu <- simulate_BBC(N, L, epsilon = 0, lambda = 1)
 Ytruth <- simu$Ytruth
 ```
 
-Then perform cluster
+Then perform clustering
 ```{r mmpca}
-res <- mmpca_clust(simu$dtm.full, Q = 6, K = 4,
+t0 <- system.time(res <- mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                           Yinit = 'random',
                           method = 'CVEM',
                           max.epochs = 10,
                           keep = 1,
                           verbose = 1)
+               )
+print(t0)
 ```
 
 ### Results analysis
