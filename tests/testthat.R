@@ -1,4 +1,4 @@
 library(testthat)
 library(MoMPCA)
 
-test_check("MMPCA")
+test_check("MoMPCA")
