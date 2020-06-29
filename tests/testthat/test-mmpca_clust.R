@@ -12,7 +12,9 @@ res <- mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                    Yinit = Ytruth,
                    max.epochs = 1,
                    keep = 1,
-                   verbose = 0)
+                   verbose = 0,
+                   nruns = 1,
+                   mc.cores = 1)
 
 test_that("check slots", code = {
   expect_is(res, "mmpcaClust")
