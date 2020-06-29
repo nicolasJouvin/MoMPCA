@@ -17,7 +17,7 @@ This is a resubmission. In this version I have followed the recommandations:
 
 ## R CMD check results
 ── R CMD check results ─────────────────────────────────────── MoMPCA 1.0.0 ────
-Duration: 1m 48s
+Duration: 1m 49.7s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 

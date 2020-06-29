@@ -69,7 +69,11 @@ cat('Final ARI is ', aricode::ARI(res@clustering, Ytruth))
 ```
 
 Other visualization are also accessible from the `plot` function. Which takes several arguments
-```{r plot-results-topics, fig.dim=c(5,5)}
+```{r condition-eval-plot, echo=F}
+cond = requireNamespace("ggplot2", quietly = TRUE) & requireNamespace("dplyr", quietly = TRUE) & requireNamespace("tidytext", quietly = TRUE)
+```
+
+```{r plot-results-topics, fig.dim=c(5,5), eval=cond}
 ggtopics <- plot(res, type = 'topics')
 print(ggtopics)
 ```
