@@ -27,7 +27,8 @@ Suggests:
     rmarkdown,
     aricode,
     ggplot2,
-    tidytext
+    tidytext,
+    reshape2
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Collate: 
