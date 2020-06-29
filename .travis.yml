@@ -4,6 +4,14 @@ cache: packages
 r_check_args: '--as-cran'
 warnings_are_errors: true
 
+addons:
+  apt:
+    packages:
+     - libgsl-dev
+     - gsl-bin
+  homebrew:
+    packages: gsl
+
 
 # build matrix
 matrix:
@@ -11,9 +19,9 @@ matrix:
   - r: devel
     os: linux
     dist: trusty
-    apt_packages:
-     - libgsl-dev
-     - gsl-bin
+#    apt_packages:
+#     - libgsl-dev
+#     - gsl-bin
 # Pb with devel version not found with curl; see
 #https://travis-ci.community/t/r-development-version-3-7-does-not-work-for-mac/4074
 #  - r: devel
@@ -23,18 +31,18 @@ matrix:
   - r: release
     os: linux
     dist: trusty
-    apt_packages:
-     - libgsl-dev
-     - gsl-bin
+#    apt_packages:
+#     - libgsl-dev
+#     - gsl-bin
   - r: release
     os: osx
     osx_image: xcode10.2
-    brew_packages: gsl
+#    brew_packages: gsl
 
 
-before_install:
-  - sudo apt-get update
-  - Rscript -e 'update.packages(ask = FALSE)'
+#before_install:
+#  - sudo apt-get update
+#  - Rscript -e 'update.packages(ask = FALSE)'
 
 ############################
 # better caching for Travis
