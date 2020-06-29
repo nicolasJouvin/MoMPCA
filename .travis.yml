@@ -7,7 +7,7 @@ warnings_are_errors: true
 addons:
   apt:
     packages:
-     - libgsl-dev
+     - libgsl0-dev
      - gsl-bin
   homebrew:
     packages: gsl
