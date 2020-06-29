@@ -8,8 +8,8 @@
 An S4 class representing a fitted mmpca model.
 }
 \details{
-The CVEM method is the branch & bound greedy procedure proposed in
-  the original paper of ???. The number of epochs in the \code{n_epochs} slot
+The BB-CVEM method is the branch & bound greedy procedure proposed in
+  the original paper of Jouvin et. al. \url{https://arxiv.org/abs/1909.00721}. The number of epochs in the \code{n_epochs} slot
   is actually the true number of pass minus 1 (unless \code{max.epochs} was
   reached). Indeed, the last pass before convergence does not change either
   the bound or the \code{clustering}, hence it is removed of the counter.
