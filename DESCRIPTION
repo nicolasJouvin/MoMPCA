@@ -4,8 +4,7 @@ Title: Inference and Clustering for Mixture of Multinomial Principal Component A
 Version: 1.0.0
 Author: Nicolas Jouvin
 Maintainer: Nicolas Jouvin <nicolas.jouvin@univ-paris1.fr>
-Description: Cluster any count data matrix with a fixed number of variables. It integrate
-License: GPL-3
+Description: Cluster any count data matrix with a fixed number of variables, such as document/term matrices. It integrates the dimension reduction aspect of topic models in the mixture models framework. Inference is done by means of a greedy Classification Variational Expectation Maximisation (C-VEM) algorithm. An Integrated Classication Likelihood (ICL) model selection is designed for selecting the latent dimension (number of topics) and the number of clusters. For more details, see the pre-print of Jouvin et. al. (2019) <arxiv.org/abs/1909.00721>.
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.4.0)
@@ -28,13 +27,15 @@ Suggests:
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Collate: 
+    'BBCVEM.R'
     'MMPCA.R'
     'benchmarks.R'
-    'branch_and_bound_cvem.R'
     'data.R'
     'init_functions.R'
     'mmpcaClustcontrol_class.R'
     'mmpcaClust_class.R'
+    'mmpcaClust_modelselection.R'
+    'mmpca_clust.R'
     'plot.R'
     'simulate_BBC.R'
     'utility_functions.R'
