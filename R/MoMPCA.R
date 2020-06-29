@@ -1,4 +1,4 @@
-#' MMPCA: Greedy clustering of count data through a mixture of multinomial PCA
+#' MoMPCA: Greedy clustering of count data through a mixture of multinomial PCA
 #'
 #' The MMPCA package implements the branch & bound classification-Variational
 #' Expectation Maximisation algorithm described in Jouvin et. al.
@@ -10,5 +10,5 @@
 #' The main entry point is the \code{\link{mmpca_clust}}() function to perfom
 #' the clustering.
 #' @docType package
-#' @name MMPCA
+#' @name MoMPCA
 NULL

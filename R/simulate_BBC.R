@@ -31,7 +31,7 @@
 simulate_BBC = function(N, L, epsilon = 0, lambda=1, theta_true = NULL){
   Q = 6
   K = 4
-  BBCmsg <- MMPCA::BBCmsg
+  BBCmsg <- MoMPCA::BBCmsg
 
   if (is.null(theta_true)) {
     theta_true = matrix(0.17, Q, K)

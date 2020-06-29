@@ -2,6 +2,8 @@
 This is a resubmission. In this version I have followed the recommandations:
 * Updated description
 * Removed the unnecessary license file
+* changed the package name to MoMPCA (old name was MMPCA) because of conflicting name
+  with a new package submitted in-between.
 
 
 ## Test environments

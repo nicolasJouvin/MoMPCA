@@ -1,8 +1,8 @@
 ---
-title: "MMPCA - A package for the clustering of count data"
+title: "MoMPCA - A package for the clustering of count data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{MMPCA}
+  %\VignetteIndexEntry{MoMPCA}
   %\VignetteEngine{knitr::knitr}
   %\usepackage[utf8]{inputenc}
 ---
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(MMPCA)
+library(MoMPCA)
 library(aricode)
 ```
 

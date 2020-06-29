@@ -1,4 +1,4 @@
-Package: MMPCA
+Package: MoMPCA
 Type: Package
 Title: Inference and Clustering for Mixture of Multinomial Principal Component Analysis
 Version: 1.0.0
@@ -23,6 +23,7 @@ Imports:
 Suggests: 
     testthat (>= 2.1.0),
     knitr,
+    markdown,
     rmarkdown,
     aricode,
     ggplot2,
@@ -31,7 +32,7 @@ RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Collate: 
     'BBCVEM.R'
-    'MMPCA.R'
+    'MoMPCA.R'
     'benchmarks.R'
     'data.R'
     'init_functions.R'
