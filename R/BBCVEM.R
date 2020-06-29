@@ -1,45 +1,13 @@
-#' @title Greedy procedures for joint inference and clustering in MMPCA
-#' @description Perform clustering of count data using the MMPCA model.
-#'
-#' @param dtm an NxV \code{\link[tm]{DocumentTermMatrix}} with term-frequency
-#'   weighting.
-#' @param Q The number of clusters
-#' @param K The number of topics (latent space dimension)
-#' @param model A given model in which to take the controls for the VE-steps in
-#'   the greedy procedure. If NULL, a model of class \code{\linkS4class{mmpcaClust}} is
-#'   created with default controls (see \code{\linkS4class{mmpcaClustcontrol}}
-#'   class for more details).
-#' @param Yinit Parameter for the initialization of Y. It can be either:
-#'   \itemize{ \item a string or a function specifying the initialization
-#'   procedure. It should be one of ('random', 'kmeans_lda'). See
-#'   \code{\link{benchmarks-functions}} functions for more details. \item A
-#'   vector of length N with Q modalities, specifying the initialization
-#'   clustering. }
-#' @param method The clustering algorithm to be used. Currently, only "CVEM" is
-#'   available.
-#' @param init.beta Parameter for the initialization of the matrix beta. It can
-#'   be either: \itemize{ \item a string specifying the initialization
-#'   procedure. It should be one of ('random', 'lda'). See
-#'   \code{\link{initializeBeta}}() for more details. \item A KxV matrix with
-#'   each row summing to 1.}
-#' @param keep The evolution of the bound is tracked every \code{keep} iteration
-#' @param max.epochs Specifies the maximum number of pass allowed on the whole
-#'   dataset.
-#' @param verbose verbosity level
-#'
-#' @return An object of class \code{"\linkS4class{mmpcaClust}"} containing the
-#'   fitted model.
-#' @export
-mmpca_clust <- function(dtm,
-                        Q,
-                        K,
-                        model = NULL,
-                        Yinit = 'random',
-                        method = 'CVEM',
-                        init.beta = 'lda',
-                        keep = 1L,
-                        max.epochs = 100L,
-                        verbose = 1L) {
+bbcvem <- function(dtm,
+                   Q,
+                   K,
+                   model = NULL,
+                   Yinit = 'random',
+                   method = 'BBCVEM',
+                   init.beta = 'lda',
+                   keep = 1L,
+                   max.epochs = 10L,
+                   verbose = 1L) {
 
   if (as.integer(K) != K || as.integer(K) < 2)
     stop("'K' needs to be an integer of at least 2")
@@ -57,7 +25,7 @@ mmpca_clust <- function(dtm,
   control_lda_loop = model@controls@control_lda_loop
 
   if (control_lda_loop@alpha != control_lda_init@alpha)
-    warning("Two hyper-parameters alpha")
+    warning("Different hyper-parameters alpha for init and loop. Taking the loop one.")
 
   alpha = control_lda_loop@alpha
   N = dim(dtm)[1]
@@ -103,21 +71,21 @@ mmpca_clust <- function(dtm,
 
   ## dummy topicmodels::lda object to store beta init
   lda_init = topicmodels::LDA(dtm, k = K,
-                             method = 'VEM',
-                             control = list(estimate.alpha = FALSE,
-                                            estimate.beta = FALSE,
-                                            alpha = alpha,
-                                            verbose = 0,
-                                            nstart = 1,
-                                            var = list(iter.max = 1),
-                                            em = list(iter.max = 1)
-                                            )
-                             )
+                              method = 'VEM',
+                              control = list(estimate.alpha = FALSE,
+                                             estimate.beta = FALSE,
+                                             alpha = alpha,
+                                             verbose = 0,
+                                             nstart = 1,
+                                             var = list(iter.max = 1),
+                                             em = list(iter.max = 1)
+                              )
+  )
 
   ## initialize the lda_init@beta slot
   if (is.matrix(init.beta) ) {
     if (!identical(dim(init.beta), c(K, V)) ||
-        identical(Matrix::rowSums(init.beta), rep(1, K))) {
+        !identical(Matrix::rowSums(init.beta), rep(1, K))) {
       stop('init.beta must be a KxV matrix which rows sums to 1.')
     }
     if (verbose > 0) message('Beta initialisation with a user given beta.')
@@ -144,13 +112,13 @@ mmpca_clust <- function(dtm,
   ## An LDA to get the individual meta obervations bounds
   ## /!\ We do not reestimate beta. /!\
   lda_aggr = topicmodels::LDA(dtm_init,
-                 k = K,
-                  control = list(estimate.alpha = FALSE,
-                                 estimate.beta = F,
-                                 var = list(iter.max = control_lda_loop@var@iter.max,
-                                          tol = control_lda_loop@var@tol),
-                                 keep = 1),
-                 model = lda_init)
+                              k = K,
+                              control = list(estimate.alpha = FALSE,
+                                             estimate.beta = F,
+                                             var = list(iter.max = control_lda_loop@var@iter.max,
+                                                        tol = control_lda_loop@var@tol),
+                                             keep = 1),
+                              model = lda_init)
 
 
   ## ------------------------------------------------------------
@@ -218,9 +186,9 @@ mmpca_clust <- function(dtm,
 
           ## Update meta-bounds : temporary VE-step
           lda_temp[[q]] <- topicmodels::LDA(dtm_temp,
-                               model = lda_algo,
-                               control = control_lda_loop,
-                               k = K)
+                                            model = lda_algo,
+                                            control = control_lda_loop,
+                                            k = K)
 
           ## Compute the bound difference. Metabounds only change for q and Y[d].
           delta_bound[q] = (lda_temp[[q]]@loglikelihood[1] - meta_bounds[Y[d]]) +
@@ -263,7 +231,7 @@ mmpca_clust <- function(dtm,
                                         k = K,
                                         model = lda_algo,
                                         control = control_lda_loop
-                                        )
+            )
           }
         }
       }else{
@@ -276,7 +244,7 @@ mmpca_clust <- function(dtm,
 
     #break of outer for loop (of the B&B)
     if (identical(Ycurrent, Y) && check_bound == current_bound)
-       break
+      break
 
 
   }
@@ -315,28 +283,28 @@ mmpca_clust <- function(dtm,
 
   ## ------------------------------------------------------------
   # Compute ICL
-  icl <- final_bound - ((K * (V - 1))) - (Q - 1) - Q * (K - 1)
+  icl <- final_bound - ((K * (V - 1))/2) * log(Q) - ((Q - 1)/2) * log(N)
 
   res <- methods::new("mmpcaClust",
-            call = mycall,
-            method = method,
-            Yinit = Yinit,
-            clustering = Y,
-            K = as.integer(K),
-            Q = as.integer(Q),
-            N = N,
-            V = V,
-            beta = beta,
-            gamma = Vgamma_final,
-            lda_algo = lda_algo,
-            max.epochs = as.integer(max.epochs),
-            logLikelihoods = bounds[1:(ceiling((epoch - 1) * N)/keep)],
-            keep = as.integer(keep),
-            n_epochs = if (epoch != 1 || epoch < max.epochs) as.integer(epoch - 1) else epoch,
-            llhood = final_bound,
-            icl = icl,
-            controls = model@controls
-            )
+                      call = mycall,
+                      method = method,
+                      Yinit = Yinit,
+                      clustering = Y,
+                      K = as.integer(K),
+                      Q = as.integer(Q),
+                      N = N,
+                      V = V,
+                      beta = beta,
+                      gamma = Vgamma_final,
+                      lda_algo = lda_algo,
+                      max.epochs = as.integer(max.epochs),
+                      logLikelihoods = bounds[1:(ceiling((epoch - 1) * N)/keep)],
+                      keep = as.integer(keep),
+                      n_epochs = if (epoch != 1 || epoch < max.epochs) as.integer(epoch - 1) else epoch,
+                      llhood = final_bound,
+                      icl = icl,
+                      controls = model@controls
+  )
   res
 }
 

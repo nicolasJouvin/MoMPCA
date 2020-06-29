@@ -1,7 +1,7 @@
 
 #' @title Beta initialization
 #' @description Used in the \code{\link{mmpca_clust}}() function to initialize
-#'   beta. It can be either "random" or "nmf". Please not that the
+#'   beta. It can be either "random" or "lda". Please not that the
 #'   \code{\link{mmpca_clust}}() function also allow for a user given beta
 #'   matrix. In this case, this function is not used.
 #' @param dtm An object of class \code{\link[tm]{DocumentTermMatrix}}
