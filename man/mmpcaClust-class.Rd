@@ -43,7 +43,7 @@ variational distribution of each $\\theta_q$ in its rows.}
 
 \item{\code{lda_algo}}{An object of class "\code{LDA}" (cf.
 \code{\linkS4class{TopicModel}}) containing the results of the
-\code{\link[topicmodels]{LDA}}() function applied to the agreggated DTM,
+\code{\link[topicmodels:TopicModel-class]{LDA}}() function applied to the aggregated DTM,
 with control \code{controls@control_lda_loop}}
 
 \item{\code{max.epochs}}{The maximum number of pass through the whole dataset in the

@@ -10,7 +10,7 @@ mmpca_clust_modelselect(dtm, Qs, Ks, Yinit = "random",
   mc.cores = (detectCores() - 1))
 }
 \arguments{
-\item{dtm}{an NxV \code{\link[tm]{DocumentTermMatrix}} with term-frequency
+\item{dtm}{an NxV \code{\link[tm:TermDocumentMatrix]{DocumentTermMatrix}} with term-frequency
 weighting.}
 
 \item{Qs}{The vector of clusters to be tested.}

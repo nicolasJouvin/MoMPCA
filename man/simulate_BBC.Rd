@@ -25,7 +25,7 @@ section of the paper.}
 }
 \value{
 A list with names \itemize{ \item \code{dtm.full}: A
-  \code{\link[tm]{DocumentTermMatrix}} object containing the simulated
+  \code{\link[tm:TermDocumentMatrix]{DocumentTermMatrix}} object containing the simulated
   document-term matrix \item \code{Ytruth}: the simulated partition \item
   theta_true The parameter of the simulation }
 }

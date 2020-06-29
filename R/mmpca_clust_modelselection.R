@@ -2,7 +2,7 @@
 #' @description A wrapper on \code{\link{mmpca_clust}}() to perform model
 #'   selection with an Integrated Classification Likelihood (ICL) criterion.
 #'
-#' @param dtm an NxV \code{\link[tm]{DocumentTermMatrix}} with term-frequency
+#' @param dtm an NxV \code{\link[tm:TermDocumentMatrix]{DocumentTermMatrix}} with term-frequency
 #'   weighting.
 #' @param Qs The vector of clusters to be tested.
 #' @param Ks The number of topics to be tested.
@@ -71,7 +71,7 @@ mmpca_clust_modelselect <- function(dtm,
   icl = -Inf
   for (k in 1:nK) {
     K = Ks[k]
-    if (verbose > 0) message('-- K = ', K, 'initialize Beta...')
+    if (verbose > 0) message('-- K = ', K, ' initialize Beta...')
     if (!is.matrix(init.beta)) {
       control_lda_init <- methods::new("LDA_VEMcontrol",
                                        estimate.alpha = FALSE,
