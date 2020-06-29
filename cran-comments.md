@@ -1,3 +1,9 @@
+## Resubmission
+This is a resubmission. In this version I have followed the recommandations:
+* Updated description
+* Removed the unnecessary license file
+
+
 ## Test environments
 * local linux ubuntu 16.04 xenial, R 3.4.4
 * ubuntu 14.04 (on travis-ci), devel and release
@@ -8,14 +14,7 @@
 * Windows (win-builder), R Under development (unstable) (2019-07-05 r76784)
 
 ## R CMD check results
-0 errors | 0 warnings 
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-There was 1 NOTE :
-
-Possibly mis-spelled words in DESCRIPTION:
-New submission
-  Variational (8:56)
-  
- 
-  
+R CMD check succeeded
 
