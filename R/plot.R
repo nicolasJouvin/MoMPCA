@@ -105,7 +105,7 @@ plot_bound <- function(res) {
 
   size = res@n_epochs*res@N
   if (res@keep > size) {
-    print("The number of iteration is lower than 'keep'. Hence, the bound evolution
+    message("The number of iteration is lower than 'keep'. Hence, the bound evolution
           can't be plotted...")
   } else if (size %% res@keep == 0) {
     df <- data.frame(iteration = seq(1, size, by = res@keep),
