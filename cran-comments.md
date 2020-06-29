@@ -3,7 +3,7 @@ This is a resubmission. In this version I have followed the recommandations:
 * Updated description
 * Removed the unnecessary license file
 * changed the package name to MoMPCA (old name was MMPCA) because of conflicting name
-  with a new package submitted in-between.
+  with a CRAN package submitted in-between.
 
 
 ## Test environments
@@ -16,7 +16,9 @@ This is a resubmission. In this version I have followed the recommandations:
 * Windows (win-builder), R Under development (unstable) (2019-07-05 r76784)
 
 ## R CMD check results
+── R CMD check results ─────────────────────────────────────── MoMPCA 1.0.0 ────
+Duration: 1m 48s
+
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
 R CMD check succeeded
-
