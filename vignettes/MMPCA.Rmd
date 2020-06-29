@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MMPCA}
   %\VignetteEngine{knitr::knitr}
-  \usepackage[utf8]{inputenc}
+  %\usepackage[utf8]{inputenc}
 ---
 
 ```{r}
@@ -26,7 +26,7 @@ library(aricode)
 
 ## Description
 
-MMPCA is a package to perform clustering of count data based on the *mixture of multinomial PCA* model. It integrates a dimension reduction aspect by factorizing the multinomial parameters in a latent space, like *Latent Dirichlet Allocation* of Blei et. al.
+MMPCA is a package to perform clustering of count data based on the *mixture of multinomial PCA* model. It integrates a dimension reduction aspect by factorizing the multinomial parameters in a latent space, like *Latent Dirichlet Allocation* of Blei et. al. It specially conceived for low sample high-dimensional data. Due to the intensive nature of the greedy algorithm, it is not suited for large sample size.
 
 ## Dataset
 
@@ -35,14 +35,13 @@ The package contains attached data in **BBCmsg**. It consists in 4 text document
 data("BBCmsg")
 ```
 
-## Mathematical background
 
 ## Demonstration for document clustering
 
 Start by generating data from the MMPCA model with a particular $\theta^\star$ and $\beta^\star$. For more detail, check experimental section of the paper.
 ```{r generate-data, echo=TRUE}
-N = 10
-L = 10
+N = 200
+L = 250
 simu <- simulate_BBC(N, L, epsilon = 0, lambda = 1)
 Ytruth <- simu$Ytruth
 ```
@@ -51,10 +50,12 @@ Then perform clustering
 ```{r mmpca}
 t0 <- system.time(res <- mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                           Yinit = 'random',
-                          method = 'CVEM',
-                          max.epochs = 10,
+                          method = 'BBCVEM',
+                          max.epochs = 7,
                           keep = 1,
-                          verbose = 2)
+                          verbose = 2,
+                          nruns = 2,
+                          mc.cores = 2)
                )
 print(t0)
 ```
@@ -76,4 +77,23 @@ print(ggtopics)
 ggbound <- plot(res, type = 'bound')
 print(ggbound)
 ```
+
+## Model selection
+
+The package contains a convenient wrapper around `mmpca_clust()` which performs model selection over a grid of values for $(K,Q)$. Here is the results for `Qs = 5:7` and `Ks = 3:5`.
+
+```{r model-selection, eval=F}
+t1 <- system.time(res <- mmpca_clust_modelselect(simu$dtm.full, Qs = 5:7, Ks = 3:5,
+                          Yinit = 'kmeans_lda',
+                          init.beta = 'lda',
+                          method = 'BBCVEM',
+                          max.epochs = 7,
+                          nruns = 3,
+                          verbose = 1)
+               )
+print(t1)
+best_model = res$models
+print(best_model)
+```
+
 
