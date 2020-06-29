@@ -10,7 +10,7 @@ matrix:
   include:
   - r: devel
     os: linux
-    dist: trusty
+    dist: xenial
     apt_packages:
      - libgsl-dev
      - gsl-bin
@@ -22,7 +22,7 @@ matrix:
 #    brew_packages: gsl
   - r: release
     os: linux
-    dist: trusty
+    dist: xenial
     apt_packages:
      - libgsl-dev
      - gsl-bin
