@@ -3,6 +3,7 @@
 export("%>%")
 export(benchmark.kmeans_lda)
 export(benchmark.random)
+export(initializeBeta)
 export(initialize_Y)
 export(mmpca_clust)
 export(mmpca_clust_modelselect)

@@ -20,6 +20,7 @@
 #'   class.
 #'
 #' @return A KxV matrix with each row summing to 1.
+#' @export
 #' @examples
 #' \donttest{
 #' simu = simulate_BBC(N = 100, L = 100)
