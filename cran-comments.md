@@ -48,11 +48,16 @@ All the following test have succeded without warnings:
     * Ubuntu 14.04 (on travis-ci), devel and release
     * OS X xcode10.2 (on travis-ci), devel and release
  * Using `devtools::check_win_*()`:
-    * **Oldrelease**: using R version 3.6.3 (2020-02-29) using platform: x86_64-w64-mingw32 (64-bit) (2f0aYhVLuWNV)
-    * **Devel **:  using R Under development (unstable) (2020-06-29 r78751) using platform: x86_64-w64-mingw32 (64-bit)
-    * **Release**: using R version 4.0.2 (2020-06-22) using platform: x86_64-w64-mingw32 (64-bit)
+    * `oldrelease()`: using R version 3.6.3 (2020-02-29) using platform: x86_64-w64-mingw32 (64-bit) (2f0aYhVLuWNV)
+    * `devel()`:  using R Under development (unstable) (2020-06-29 r78751) using platform: x86_64-w64-mingw32 (64-bit)
+    * `release()`: using R version 4.0.2 (2020-06-22) using platform: x86_64-w64-mingw32 (64-bit)
     
-Possibly mis-spelled words in DESCRIPTION:
+  
+  * Using `rhub::check_*`
+    * `_on_Fedora()`: NOTE   Note: found 16 marked UTF-8 strings
+    
+## NOTE
+  Possibly mis-spelled words in DESCRIPTION:
   Classication (8:328)
   ICL (8:353)
   Jouvin (8:505)
@@ -61,11 +66,6 @@ Possibly mis-spelled words in DESCRIPTION:
   al (8:516)
   et (8:512)
   
-  * Using `rhub::check`
-    * **Fedora**: NOTE   Note: found 16 marked UTF-8 strings
-    *
-    *
-    
 ## Local R CMD check results
 ── R CMD check results ─────────────────────────────────────── MoMPCA 1.0.0 ────
 Duration: 1m 49.7s
