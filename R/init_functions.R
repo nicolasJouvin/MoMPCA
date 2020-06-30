@@ -4,7 +4,7 @@
 #'   beta. It can be either "random" or "lda". Please not that the
 #'   \code{\link{mmpca_clust}}() function also allow for a user given beta
 #'   matrix. In this case, this function is not used.
-#' @param dtm An object of class \code{\link[tm:TermDocumentMatrix]{DocumentTermMatrix}}
+#' @param dtm An object of class \code{\link[tm:TermDocumentMatrix]{tm::DocumentTermMatrix()}}
 #' @param init.beta A string specifying the method, either \itemize{\item
 #'   'random': Initialization a la Blei et. al. with 1/V coefficient everywhere
 #'   + a small uniform noise U[0, 1e-10] on every coefficients. \item 'lda':
@@ -14,7 +14,7 @@
 #' @param K The number of topics (dimension of the latent space).
 #' @param verbose The verbosity level. Only prints a message at function
 #'   activation.
-#' @param control_lda_init The control for \code{\link[topicmodels:TopicModel-class]{LDA}}().
+#' @param control_lda_init The control for \code{\link{LDA}}().
 #'   Only used when \code{init.beta} == 'lda' and initilialized to the default
 #'   \code{"LDA_VEMcontrol"} of the \code{\linkS4class{TopicModelcontrol}}
 #'   class.
@@ -84,7 +84,7 @@ initializeBeta = function(dtm, init.beta, K,
 #' @description Perform a \code{DocumentTermMatrix} clustering via default
 #'   routines or allow for user specified function
 #'
-#' @param dtm An object of class \code{\link[tm:TermDocumentMatrix]{DocumentTermMatrix}}
+#' @param dtm An object of class \code{\link[tm:TermDocumentMatrix]{tm::DocumentTermMatrix()}}
 #' @param Q The number of cluster
 #' @param K The dimension of the latent space. It is mandatory, for
 #'   compatibility reasons but not always used (e.g. random do not use it).

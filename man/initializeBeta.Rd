@@ -7,7 +7,7 @@
 initializeBeta(dtm, init.beta, K, verbose = 0, control_lda_init = NULL)
 }
 \arguments{
-\item{dtm}{An object of class \code{\link[tm:TermDocumentMatrix]{DocumentTermMatrix}}}
+\item{dtm}{An object of class \code{\link[tm:TermDocumentMatrix]{tm::DocumentTermMatrix()}}}
 
 \item{init.beta}{A string specifying the method, either \itemize{\item
 'random': Initialization a la Blei et. al. with 1/V coefficient everywhere
@@ -21,7 +21,7 @@ burning iterations and 1000 iterations.  }}
 \item{verbose}{The verbosity level. Only prints a message at function
 activation.}
 
-\item{control_lda_init}{The control for \code{\link[topicmodels:TopicModel-class]{LDA}}().
+\item{control_lda_init}{The control for \code{\link{LDA}}().
 Only used when \code{init.beta} == 'lda' and initilialized to the default
 \code{"LDA_VEMcontrol"} of the \code{\linkS4class{TopicModelcontrol}}
 class.}

@@ -4,6 +4,11 @@ This is a resubmission. In this version I have followed the recommandations:
 * Removed the unnecessary license file
 * changed the package name to MoMPCA (old name was MMPCA) because of conflicting name
   with a CRAN package submitted in-between.
+* Changed \dontrun by \donttest for long examples
+* 
+
+__Note__ : I had to remove some cross-references due to a warning on Debian : "Non-file package-anchored link(s) in documentation object". It seems related to this issue : 
+https://github.com/r-lib/roxygen2/issues/707
 
 
 ## Test environments
