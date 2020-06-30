@@ -7,7 +7,7 @@
 initialize_Y(dtm, Q, K, init = "random")
 }
 \arguments{
-\item{dtm}{An object of class \code{\link{tm::DocumentTermMatrix}}}
+\item{dtm}{An object of class \code{\link{DocumentTermMatrix}}}
 
 \item{Q}{The number of cluster}
 

@@ -4,7 +4,7 @@
 #'   beta. It can be either "random" or "lda". Please not that the
 #'   \code{\link{mmpca_clust}}() function also allow for a user given beta
 #'   matrix. In this case, this function is not used.
-#' @param dtm An object of class \code{\link{tm::DocumentTermMatrix}}
+#' @param dtm An object of class \code{\link{DocumentTermMatrix}}
 #' @param init.beta A string specifying the method, either \itemize{\item
 #'   'random': Initialization a la Blei et. al. with 1/V coefficient everywhere
 #'   + a small uniform noise U[0, 1e-10] on every coefficients. \item 'lda':
@@ -84,7 +84,7 @@ initializeBeta = function(dtm, init.beta, K,
 #' @description Perform a \code{DocumentTermMatrix} clustering via default
 #'   routines or allow for user specified function
 #'
-#' @param dtm An object of class \code{\link{tm::DocumentTermMatrix}}
+#' @param dtm An object of class \code{\link{DocumentTermMatrix}}
 #' @param Q The number of cluster
 #' @param K The dimension of the latent space. It is mandatory, for
 #'   compatibility reasons but not always used (e.g. random do not use it).

@@ -7,7 +7,7 @@
 initializeBeta(dtm, init.beta, K, verbose = 0, control_lda_init = NULL)
 }
 \arguments{
-\item{dtm}{An object of class \code{\link{tm::DocumentTermMatrix}}}
+\item{dtm}{An object of class \code{\link{DocumentTermMatrix}}}
 
 \item{init.beta}{A string specifying the method, either \itemize{\item
 'random': Initialization a la Blei et. al. with 1/V coefficient everywhere

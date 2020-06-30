@@ -10,7 +10,7 @@ mmpca_clust(dtm, Q, K, model = NULL, Yinit = "random",
   (detectCores() - 1)))
 }
 \arguments{
-\item{dtm}{an NxV \code{\link{tm::DocumentTermMatrix}} with term-frequency
+\item{dtm}{an NxV \code{\link{DocumentTermMatrix}} with term-frequency
 weighting.}
 
 \item{Q}{The number of clusters}

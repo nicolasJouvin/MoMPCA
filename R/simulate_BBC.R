@@ -18,7 +18,7 @@
 #'   section of the paper.
 #'
 #' @return A list with names \itemize{ \item \code{dtm.full}: A
-#'   \code{\link{tm::DocumentTermMatrix}} object containing the simulated
+#'   \code{\link{DocumentTermMatrix}} object containing the simulated
 #'   document-term matrix \item \code{Ytruth}: the simulated partition \item
 #'   theta_true The parameter of the simulation }
 #' @export
