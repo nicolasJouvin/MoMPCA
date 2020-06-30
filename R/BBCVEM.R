@@ -36,7 +36,6 @@ bbcvem <- function(dtm,
   ##
   ## Several benchmarks possible.
 
-  init_method = 'user provided'
   if (is.character(Yinit) && length(Yinit) == 1) {
     init_method <- Yinit
     Yinit <- initialize_Y(dtm, Q, K, init = init_method)
@@ -85,9 +84,9 @@ bbcvem <- function(dtm,
   ## initialize the lda_init@beta slot
   if (is.matrix(init.beta) ) {
     if (!all.equal(dim(init.beta), c(K, V)) ||
-        !identical(Matrix::rowSums(init.beta), rep(1, K))) {
-
+        !all.equal(Matrix::rowSums(init.beta), rep(1, K), tolerance = 1e-12)) {
       stop('init.beta must be a KxV matrix which rows sums to 1.')
+      # stop(paste0("K =", K, " V=", V, '\n rowsums = ', Matrix::rowSums(init.beta), ' / diff = ', rep(1, K) - Matrix::rowSums(init.beta), '\n'))
     }
     if (verbose > 0) message('Beta initialisation with a user given beta.')
     lda_init@beta = log(init.beta)

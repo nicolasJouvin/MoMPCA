@@ -1,10 +1,10 @@
 ## Resubmission
-This is a resubmission. In this version I have followed the recommandations:
+This is a resubmission (with a name change due to a conflict). In this version I have followed the recommandations:
 
-* Updated description
-* Removed the unnecessary license file
 * changed the package name to MoMPCA (old name was MMPCA) because of conflicting name
   with a CRAN package submitted in-between.
+* Updated description
+* Removed the unnecessary license file
 * Changed \dontrun by \donttest for long examples
 
 
