@@ -37,15 +37,16 @@
 #' @examples
 #' \donttest{
 #' simu = simulate_BBC(N = 200, L = 250)
-#' Qs = 5:7
+#' Qs = 5:6
 #' Ks = 3:4
 #' res <- mmpca_clust_modelselect(simu$dtm.full, Qs = Qs, Ks = Ks,
 #' Yinit = 'kmeans_lda',
 #' init.beta = 'lda',
 #' method = 'BBCVEM',
 #' max.epochs = 7,
-#' nruns = 3,
-#' verbose = 1)
+#' nruns = 2,
+#' verbose = 1,
+#' mc.cores = 2)
 #' }
 mmpca_clust_modelselect <- function(dtm,
                                     Qs,

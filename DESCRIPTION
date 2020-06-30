@@ -8,7 +8,7 @@ Description: Cluster any count data matrix with a fixed number of variables, suc
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 3.4.0)
+Depends: R (>= 3.6.0)
 Imports:
     methods,
     topicmodels,
