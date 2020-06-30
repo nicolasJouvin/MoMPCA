@@ -1,7 +1,7 @@
 #' @title Greedy procedures for joint inference and clustering in MMPCA
 #' @description Perform clustering of count data using the MMPCA model.
 #'
-#' @param dtm an NxV \code{\link[tm:TermDocumentMatrix]{tm::DocumentTermMatrix()}} with term-frequency
+#' @param dtm an NxV \code{\link{tm::DocumentTermMatrix}} with term-frequency
 #'   weighting.
 #' @param Q The number of clusters
 #' @param K The number of topics (latent space dimension)
