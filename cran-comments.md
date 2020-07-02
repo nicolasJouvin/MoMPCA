@@ -56,7 +56,7 @@ All the following test have succeded without warnings:
   * Using `rhub::check_*`
     * `_on_Fedora()`: NOTE   Note: found 16 marked UTF-8 strings
     
-## NOTE
+NOTE on some systems:
   Possibly mis-spelled words in DESCRIPTION:
   Classication (8:328)
   ICL (8:353)
@@ -66,10 +66,10 @@ All the following test have succeded without warnings:
   al (8:516)
   et (8:512)
   
-## Local R CMD check results
 ── R CMD check results ─────────────────────────────────────── MoMPCA 1.0.0 ────
-Duration: 1m 49.7s
+Duration: 3m 25.7s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
 R CMD check succeeded
+
