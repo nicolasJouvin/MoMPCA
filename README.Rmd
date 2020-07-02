@@ -127,9 +127,24 @@ Please cite our work using the following reference:
 
 - N. Jouvin, P. Latouche, C. Bouveyron, A. Livartowski, G. Bataillon, Greedy clustering of count data through a mixture of multinomial PCA  (To appear in [Computational Statistics](https://www.springer.com/journal/180)) 
 
+```
+@article{jouvin:hal-02278224,
+  TITLE = {{Greedy clustering of count data through a mixture of multinomial PCA}},
+  AUTHOR = {Jouvin, Nicolas and Latouche, Pierre and Bouveyron, Charles and Bataillon, Guillaume and Livartowski, Alain},
+  URL = {https://hal.archives-ouvertes.fr/hal-02278224},
+  NOTE = {31 pages, 10 figures},
+  JOURNAL = {{Computational Statistics}},
+  PUBLISHER = {{Springer Verlag}},
+  YEAR = {2020},
+  KEYWORDS = {Dimension reduction ; Topic modeling ; Count data ; Mixture models ; Clustering ; Variational inference},
+  HAL_ID = {hal-02278224},
+  HAL_VERSION = {v1},
+}
+```
+
 and consider citing this package
 
-```{r citation}
+```{r citation, warning=FALSE}
 citation('MoMPCA')
 ```
 
