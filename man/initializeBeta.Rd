@@ -38,7 +38,6 @@ Used in the \code{\link{mmpca_clust}}() function to initialize
 \examples{
 \donttest{
 simu = simulate_BBC(N = 100, L = 100)
-Q = 6
 K = 4
 beta = initializeBeta(simu$dtm.full, 'lda', K, verbose = 1)
 }

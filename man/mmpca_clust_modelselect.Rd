@@ -58,16 +58,18 @@ A wrapper on \code{\link{mmpca_clust}}() to perform model
 }
 \examples{
 \donttest{
-simu = simulate_BBC(N = 200, L = 250)
+## generate data with the BBCmsg
+simu = simulate_BBC(N = 100, L = 250)
+## Define a grid
 Qs = 5:6
 Ks = 3:4
+## Run model selection with MoMPCA
 res <- mmpca_clust_modelselect(simu$dtm.full, Qs = Qs, Ks = Ks,
-Yinit = 'kmeans_lda',
-init.beta = 'lda',
-method = 'BBCVEM',
-max.epochs = 7,
-nruns = 2,
-verbose = 1,
-mc.cores = 2)
-}
+                               Yinit = 'kmeans_lda',
+                               init.beta = 'lda',
+                               method = 'BBCVEM',
+                               max.epochs = 7,
+                               nruns = 2,
+                               verbose = 1,
+                               mc.cores = 2)}
 }
