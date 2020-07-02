@@ -37,7 +37,10 @@ required_CRAN <- c("methods",
     "dplyr",
     "stats",
     "doParallel",
-    "foreach")
+    "foreach", 
+    "ggplot2",
+    "reshape2",
+    "tidytext")
 not_installed_CRAN <- setdiff(required_CRAN, rownames(installed.packages()))
 if (length(not_installed_CRAN) > 0) install.packages(not_installed_CRAN)
 ```
@@ -74,7 +77,7 @@ dtm <- simu$dtm.full
 Ytruth <- simu$Ytruth # true clustering
 ```
 
-The `dtm` is a `tm::DocumentTermMatrix()` object. The main fitting function is `mmpca_clust()`, which allow for a parralel backend via its argument `mc.cores`. There is a simple wrapper around this function called `mmpca_clust_modelselect()` which allows for model selection of $(Q, K)$ with ICL criterion. Please be aware that the greedy nature of the algorithm may induce quite intensive computations.
+The `dtm` is a `tm::DocumentTermMatrix()` object. The main fitting function is `mmpca_clust()`, which allow for a parralel backend via its argument `mc.cores`. There is a simple wrapper around this function called `mmpca_clust_modelselect()` which allows for model selection of `(Q, K)` with an ICL criterion. Please be aware that the greedy nature of the algorithm may induce quite intensive computations.
 
 ### Greedy clustering with a mixture of multinomial PCA
 
@@ -87,6 +90,20 @@ res <- mmpca_clust(simu$dtm.full, Q = 6, K = 4,
                           verbose = 2,
                           nruns = 2,
                           mc.cores = 1)
+```
+
+The top words of the topic matrix `beta` can then be plotted (if working with text)
+
+```{r plot-topics, eval=FALSE}
+ggtopics <- plot(res, type = 'topics', n_words = 5)
+print(ggtopics)
+```
+
+And the bound evolution throughout the epochs
+
+```{r plot-bound, eval=FALSE}
+ggbound <- plot(res, type = 'bound')
+print(ggbound)
 ```
 
 ### Model selection
