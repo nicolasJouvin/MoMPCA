@@ -3,7 +3,6 @@
 \docType{package}
 \name{MoMPCA}
 \alias{MoMPCA}
-\alias{MoMPCA-package}
 \title{MoMPCA: Greedy clustering of count data through a mixture of multinomial PCA}
 \description{
 The MMPCA package implements the branch & bound classification-Variational

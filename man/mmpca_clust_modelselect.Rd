@@ -4,10 +4,19 @@
 \alias{mmpca_clust_modelselect}
 \title{Model selection for MMPCA}
 \usage{
-mmpca_clust_modelselect(dtm, Qs, Ks, Yinit = "random",
-  method = "BBCVEM", init.beta = "lda", keep = 1L,
-  max.epochs = 10L, verbose = 1L, nruns = 5L,
-  mc.cores = (detectCores() - 1))
+mmpca_clust_modelselect(
+  dtm,
+  Qs,
+  Ks,
+  Yinit = "random",
+  method = "BBCVEM",
+  init.beta = "lda",
+  keep = 1L,
+  max.epochs = 10L,
+  verbose = 1L,
+  nruns = 5L,
+  mc.cores = (detectCores() - 1)
+)
 }
 \arguments{
 \item{dtm}{an NxV \code{\link{DocumentTermMatrix}} with term-frequency

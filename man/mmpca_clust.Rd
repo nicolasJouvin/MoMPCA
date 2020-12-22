@@ -4,10 +4,20 @@
 \alias{mmpca_clust}
 \title{Greedy procedures for joint inference and clustering in MMPCA}
 \usage{
-mmpca_clust(dtm, Q, K, model = NULL, Yinit = "random",
-  method = "BBCVEM", init.beta = "lda", keep = 1L,
-  max.epochs = 10L, verbose = 1L, nruns = 1L, mc.cores = max(1,
-  (detectCores() - 1)))
+mmpca_clust(
+  dtm,
+  Q,
+  K,
+  model = NULL,
+  Yinit = "random",
+  method = "BBCVEM",
+  init.beta = "lda",
+  keep = 1L,
+  max.epochs = 10L,
+  verbose = 1L,
+  nruns = 1L,
+  mc.cores = max(1, (detectCores() - 1))
+)
 }
 \arguments{
 \item{dtm}{an NxV \code{\link{DocumentTermMatrix}} with term-frequency
