@@ -33,7 +33,7 @@ matrix:
 #    brew_packages: gsl
   - r: release
     os: linux
-    dist: trusty
+    dist: bionic
 #    apt_packages:
 #     - libgsl-dev
 #     - gsl-bin
