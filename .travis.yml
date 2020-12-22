@@ -21,7 +21,7 @@ matrix:
   include:
   - r: devel
     os: linux
-    dist: trusty
+    dist: bionic
 #    apt_packages:
 #     - libgsl-dev
 #     - gsl-bin
