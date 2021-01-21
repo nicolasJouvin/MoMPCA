@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 ## Installation
 
-**MoMPCA** is available on [CRAN](https://cran.r-project.org/web/packages/MoMPCA/index.html) and the development version available on [Github](https://github.com/nicolasJouvin/MoMPCA).
+**MoMPCA** is available on [CRAN](https://cran.r-project.org/package=MoMPCA) and the development version available on [Github](https://github.com/nicolasJouvin/MoMPCA).
 
 ### R Package installation
 

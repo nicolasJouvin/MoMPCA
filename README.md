@@ -15,9 +15,8 @@ status](https://travis-ci.org/nicolasJouvin/MMPCA.svg?branch=master)](https://tr
 ## Installation
 
 **MoMPCA** is available on
-[CRAN](https://cran.r-project.org/web/packages/MoMPCA/index.html) and
-the development version available on
-[Github](https://github.com/nicolasJouvin/MoMPCA).
+[CRAN](https://cran.r-project.org/package=MoMPCA) and the development
+version available on [Github](https://github.com/nicolasJouvin/MoMPCA).
 
 ### R Package installation
 
@@ -164,9 +163,9 @@ citation('MoMPCA')
 ## 
 ## To cite package 'MoMPCA' in publications use:
 ## 
-##   Nicolas Jouvin (2020). MoMPCA: Inference and Clustering for
-##   Mixture of Multinomial Principal Component Analysis. R package
-##   version 1.0.0.
+##   Nicolas Jouvin (2020). MoMPCA: Inference and Clustering for Mixture
+##   of Multinomial Principal Component Analysis. R package version 1.0.0.
+##   https://CRAN.R-project.org/package=MoMPCA
 ## 
 ## A BibTeX entry for LaTeX users is
 ## 
@@ -176,9 +175,10 @@ citation('MoMPCA')
 ##     author = {Nicolas Jouvin},
 ##     year = {2020},
 ##     note = {R package version 1.0.0},
+##     url = {https://CRAN.R-project.org/package=MoMPCA},
 ##   }
 ## 
-## ATTENTION: This citation information has been auto-generated from
-## the package DESCRIPTION file and may need manual editing, see
+## ATTENTION: This citation information has been auto-generated from the
+## package DESCRIPTION file and may need manual editing, see
 ## 'help("citation")'.
 ```
